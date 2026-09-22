@@ -18,6 +18,9 @@ import {
   PerformanceRecordInsert
 } from '../models/performance-record';
 
+import {
+  getToday
+} from '../shared/utils/date.util';
 
 
 @Component({
@@ -33,14 +36,22 @@ export class PerformanceRecordComponent {
   private fb = inject(FormBuilder);
   private api = inject(PerformanceApiService);
 
+
+  /** Success message displayed after a successful submission. */
   successMessage = '';
+
+  /** Error message displayed after a failed operation. */
   errorMessage = '';
 
+
+  /** Categories available for performance records. */
   categories: PerformanceCategory[] = [
     'Sale',
     'Production'
   ];
 
+
+  /** Form used to create a performance record. */
   performanceRecordForm = this.fb.nonNullable.group({
 
     category: [
@@ -57,7 +68,7 @@ export class PerformanceRecordComponent {
     ],
 
     day: [
-      this.getToday(),
+      getToday(),
       Validators.required
     ],
 
@@ -67,40 +78,26 @@ export class PerformanceRecordComponent {
 
   });
 
-
-  private getToday(): string {
-
-    const today = new Date();
-
-    const year = today.getFullYear();
-    const month = String(
-      today.getMonth() + 1
-    ).padStart(2, '0');
-
-    const day = String(
-      today.getDate()
-    ).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
-
-
+  /** Creates a performance record from the form data. */
   submit(): void {
 
     this.successMessage = '';
     this.errorMessage = '';
 
     if (this.performanceRecordForm.invalid) {
+
       this.performanceRecordForm.markAllAsTouched();
       return;
     }
 
-    const formValue = this.performanceRecordForm.getRawValue();
+    const formValue =
+      this.performanceRecordForm.getRawValue();
 
     if (
       formValue.category !== 'Sale' &&
       formValue.category !== 'Production'
     ) {
+
       this.performanceRecordForm.controls.category.markAsTouched();
       return;
     }
@@ -111,11 +108,6 @@ export class PerformanceRecordComponent {
       day: formValue.day,
       ignore: false
     };
-
-    console.log(
-      'Sende Performance Record:',
-      data
-    );
 
     this.api.createPerformanceRecord(data).subscribe({
 
@@ -132,7 +124,7 @@ export class PerformanceRecordComponent {
         this.performanceRecordForm.reset({
           category: '',
           amount: 0,
-          day: this.getToday(),
+          day: getToday(),
           ignore: false
         });
       },
@@ -150,6 +142,5 @@ export class PerformanceRecordComponent {
 
     });
   }
-
 
 }

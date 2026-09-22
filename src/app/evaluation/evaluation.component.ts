@@ -33,7 +33,17 @@ import {
   EvaluationPeriod
 } from '../models/evaluation';
 
+import {
+  formatDate,
+  getToday,
+  parseDate
+} from '../shared/utils/date.util';
 
+
+
+/**
+ * Available evaluation periods.
+ */
 type EvaluationMode =
   | 'day'
   | 'week'
@@ -54,107 +64,56 @@ type EvaluationMode =
 export class EvaluationComponent {
 
   private fb = inject(FormBuilder);
-
-  private api = inject(
-    ProductionApiService
-  );
-
-  private cdr = inject(
-    ChangeDetectorRef
-  );
+  private api = inject(ProductionApiService);
+  private cdr = inject(ChangeDetectorRef);
 
 
-  /*
-   * ========================================
-   * Zustand
-   * ========================================
-   */
-
+  /** Current evaluation result. */
   evaluation: Evaluation | null = null;
 
-    loading = false;
+  /** Indicates whether an evaluation request is active. */
+  loading = false;
 
-    errorMessage = '';
+  /** Current error message. */
+  errorMessage = '';
 
-    customRangeRequested = false;
+  /** Indicates whether a custom range has been requested. */
+  customRangeRequested = false;
 
-
-
-  /*
-   * Standardansicht.
-   */
+  /** Currently selected evaluation mode. */
   currentMode: EvaluationMode = 'week';
 
+  /** Date used as reference for day, week and year evaluations. */
+  private readonly today = new Date();
 
-  /*
-   * ========================================
-   * Aktuelles Datum
-   * ========================================
+
+  /**
+   * Evaluation filter form.
    *
-   * Wichtig:
-   *
-   * selectedDate bleibt immer das tatsächlich
-   * ausgewählte Datum.
-   *
-   * Wir benutzen es NICHT für die
-   * Monatsauswahl.
+   * selectedMonth uses the JavaScript month index (0-11).
    */
-
-  private readonly today =
-    new Date();
-
-
-  /*
-   * ========================================
-   * Formular
-   * ========================================
-   */
-
   customForm = this.fb.nonNullable.group({
 
-    /*
-     * Von / Bis für benutzerdefinierten
-     * Zeitraum.
-     */
     from: [
-      this.getToday(),
+      getToday(),
       Validators.required
     ],
 
     to: [
-      this.getToday(),
+      getToday(),
       Validators.required
     ],
 
-
-    /*
-     * Datum für Tag und Woche.
-     *
-     * Bleibt auf dem heutigen Datum.
-     */
     selectedDate: [
-      this.getToday(),
+      getToday(),
       Validators.required
     ],
 
-
-    /*
-     * Monat für die Monatsauswertung.
-     *
-     * Januar = 0
-     * Februar = 1
-     * ...
-     * Dezember = 11
-     */
     selectedMonth: [
       this.today.getMonth(),
       Validators.required
     ],
 
-
-    /*
-     * Jahr für die Monatsauswertung.
-     */
     selectedMonthYear: [
       this.today.getFullYear(),
       Validators.required
@@ -163,48 +122,23 @@ export class EvaluationComponent {
   });
 
 
-  /*
-   * ========================================
-   * Verfügbare Jahre
-   * ========================================
-   */
-
+  /** Years available for month selection. */
   availableYears: number[] = [];
 
 
-  /*
-   * ========================================
-   * Periodenwerte
-   * ========================================
-   */
-
+  /** Aggregated values for the currently displayed period. */
   selectedPeriod: EvaluationPeriod = {
-
     production: 0,
-
     sale: 0,
-
     difference: 0
-
   };
 
-
-  /*
-   * ========================================
-   * Konstruktor
-   * ========================================
-   */
 
   constructor() {
 
     const currentYear =
       this.today.getFullYear();
 
-
-    /*
-     * 10 Jahre zurück
-     * bis 10 Jahre in die Zukunft.
-     */
     this.availableYears =
       Array.from(
         { length: 21 },
@@ -212,37 +146,11 @@ export class EvaluationComponent {
           currentYear - 10 + index
       );
 
-
-    /*
-     * WICHTIG:
-     *
-     * selectedDate wird hier NICHT verändert.
-     *
-     * Dadurch bleibt bei Tag/Woche:
-     *
-     * z.B. 22.09.2026
-     *
-     * und nicht:
-     *
-     * 01.09.2026
-     */
-
-
-    /*
-     * Standardansicht:
-     * aktuelle Woche laden.
-     */
     this.loadWeek();
-
   }
 
 
-  /*
-   * ========================================
-   * Aktuell ausgewählter Monat
-   * ========================================
-   */
-
+  /** Returns the currently selected month. */
   get selectedMonth(): number {
 
     return this.customForm.controls.selectedMonth.value;
@@ -250,12 +158,7 @@ export class EvaluationComponent {
   }
 
 
-  /*
-   * ========================================
-   * Aktuell ausgewähltes Monatsjahr
-   * ========================================
-   */
-
+  /** Returns the currently selected month year. */
   get selectedMonthYear(): number {
 
     return this.customForm.controls.selectedMonthYear.value;
@@ -263,494 +166,278 @@ export class EvaluationComponent {
   }
 
 
-  /*
-   * ========================================
-   * Ansicht wechseln
-   * ========================================
-   */
-
-selectMode(
-  mode: EvaluationMode
-): void {
-
-  this.currentMode = mode;
-
-  this.errorMessage = '';
-
-  /*
-   * ======================================
-   * BENUTZERDEFINIERTER ZEITRAUM
-   * ======================================
+  /**
+   * Changes the active evaluation mode.
    *
-   * Es gibt keinen Standardzeitraum.
-   *
-   * Deshalb:
-   * - alte Auswertung entfernen
-   * - keine API-Anfrage
-   * - Info-Nachricht anzeigen
+   * @param mode Evaluation mode to activate.
    */
+  selectMode(
+    mode: EvaluationMode
+  ): void {
 
-  if (mode === 'custom') {
+    this.currentMode = mode;
+    this.errorMessage = '';
 
-    this.evaluation = null;
+    if (mode === 'custom') {
+
+      this.evaluation = null;
+      this.customRangeRequested = false;
+
+      this.selectedPeriod = {
+        production: 0,
+        sale: 0,
+        difference: 0
+      };
+
+      return;
+    }
 
     this.customRangeRequested = false;
 
-    this.selectedPeriod = {
-      production: 0,
-      sale: 0,
-      difference: 0
-    };
+    switch (mode) {
 
-    return;
-  }
+      case 'day':
+        this.loadDay();
+        break;
 
+      case 'week':
+        this.loadWeek();
+        break;
 
-  /*
-   * Bei allen anderen Ansichten
-   * ist die alte Custom-Anzeige
-   * nicht mehr relevant.
-   */
+      case 'month':
+        this.syncMonthFromDate();
+        this.loadMonth();
+        break;
 
-  this.customRangeRequested = false;
-
-
-  switch (mode) {
-
-    case 'day':
-
-      this.loadDay();
-
-      break;
-
-
-    case 'week':
-
-      this.loadWeek();
-
-      break;
-
-
-    case 'month': {
-
-      const now = new Date();
-
-      this.customForm.controls.selectedMonth.setValue(
-        now.getMonth()
-      );
-
-      this.customForm.controls.selectedMonthYear.setValue(
-        now.getFullYear()
-      );
-
-      this.loadMonth();
-
-      break;
+      case 'year':
+        this.loadYear();
+        break;
     }
-
-
-    case 'year':
-
-      this.loadYear();
-
-      break;
-
   }
 
-}
 
-
-
-
-  /*
-   * ========================================
-   * Datum geändert
-   * ========================================
-   */
-
+  /** Reloads the evaluation after the selected date changes. */
   onDateChange(): void {
 
     this.errorMessage = '';
 
-
     switch (this.currentMode) {
 
       case 'day':
-
         this.loadDay();
-
         break;
-
 
       case 'week':
-
         this.loadWeek();
-
         break;
-
 
       case 'month':
-
-        /*
-         * Sollte selectedDate einmal
-         * für die Monatsansicht geändert
-         * werden, übernehmen wir Monat/Jahr.
-         */
         this.syncMonthFromDate();
-
         this.loadMonth();
-
         break;
-
 
       case 'year':
-
         this.loadYear();
-
         break;
-
     }
-
   }
 
 
-  /*
-   * ========================================
-   * Monat geändert
-   * ========================================
-   */
-
+  /** Reloads the evaluation after the selected month changes. */
   onMonthChange(): void {
 
     this.errorMessage = '';
-
-
-    /*
-     * Der FormControl-Wert wird bereits
-     * automatisch aktualisiert.
-     *
-     * Deshalb müssen wir hier nichts
-     * manuell aus event.target.value
-     * auslesen.
-     */
-
     this.loadMonth();
-
   }
 
 
-  /*
-   * ========================================
-   * Jahr für Monatsansicht geändert
-   * ========================================
-   */
-
+  /** Reloads the evaluation after the selected month year changes. */
   onMonthYearChange(): void {
 
     this.errorMessage = '';
-
-
-    /*
-     * Auch hier wird der FormControl-Wert
-     * automatisch aktualisiert.
-     */
-
     this.loadMonth();
-
   }
 
 
-  /*
-   * ========================================
-   * Monat/Jahr aus selectedDate übernehmen
-   * ========================================
-   */
-
+  /** Synchronizes the month controls with the selected date. */
   private syncMonthFromDate(): void {
 
     const value =
       this.customForm.controls.selectedDate.value;
 
-
     if (!value) {
-
       return;
-
     }
-
 
     const date =
-      this.parseDate(value);
+      parseDate(value);
 
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
+    if (Number.isNaN(date.getTime())) {
       return;
-
     }
-
 
     this.customForm.controls.selectedMonth.setValue(
       date.getMonth()
     );
 
-
     this.customForm.controls.selectedMonthYear.setValue(
       date.getFullYear()
     );
-
   }
 
 
-  /*
-   * ========================================
-   * Tag
-   * ========================================
-   */
-
+  /** Loads the evaluation for the selected day. */
   private loadDay(): void {
 
     const selectedDate =
       this.customForm.controls.selectedDate.value;
 
-
     this.requestEvaluation(
       selectedDate,
       selectedDate
     );
-
   }
 
 
-  /*
-   * ========================================
-   * Woche
-   * ========================================
-   */
-
+  /** Loads the evaluation for the week containing the selected date. */
   private loadWeek(): void {
 
     const selectedDate =
       this.customForm.controls.selectedDate.value;
 
-
     const selected =
-      this.parseDate(
-        selectedDate
-      );
-
+      parseDate(selectedDate);
 
     const day =
       selected.getDay();
 
-
-    /*
-     * Montag = 1
-     * Sonntag = 0
-     */
     const difference =
       day === 0
         ? -6
         : 1 - day;
 
-
     const monday =
       new Date(selected);
-
 
     monday.setDate(
       selected.getDate() + difference
     );
 
-
     const sunday =
       new Date(monday);
-
 
     sunday.setDate(
       monday.getDate() + 6
     );
 
-
     this.requestEvaluation(
-      this.formatDate(monday),
-      this.formatDate(sunday)
+      formatDate(monday),
+      formatDate(sunday)
     );
-
   }
 
 
-  /*
-   * ========================================
-   * Monat
-   * ========================================
-   */
-
+  /** Loads the evaluation for the selected month. */
   private loadMonth(): void {
 
     const month =
       this.customForm.controls.selectedMonth.value;
 
-
     const year =
       this.customForm.controls.selectedMonthYear.value;
 
-
-    /*
-     * Erster Tag des Monats.
-     */
     const firstDay =
-      new Date(
-        year,
-        month,
-        1
-      );
+      new Date(year, month, 1);
 
-
-    /*
-     * Letzter Tag des Monats.
-     */
     const lastDay =
-      new Date(
-        year,
-        month + 1,
-        0
-      );
-
+      new Date(year, month + 1, 0);
 
     this.requestEvaluation(
-      this.formatDate(firstDay),
-      this.formatDate(lastDay)
+      formatDate(firstDay),
+      formatDate(lastDay)
     );
-
   }
 
 
-  /*
-   * ========================================
-   * Jahr
-   * ========================================
-   */
-
+  /** Loads the evaluation for the year of the selected date. */
   private loadYear(): void {
 
     const selectedDate =
       this.customForm.controls.selectedDate.value;
 
-
     const selected =
-      this.parseDate(
-        selectedDate
-      );
-
+      parseDate(selectedDate);
 
     const year =
       selected.getFullYear();
 
-
     const firstDay =
-      new Date(
-        year,
-        0,
-        1
-      );
-
+      new Date(year, 0, 1);
 
     const lastDay =
-      new Date(
-        year,
-        11,
-        31
-      );
-
+      new Date(year, 11, 31);
 
     this.requestEvaluation(
-      this.formatDate(firstDay),
-      this.formatDate(lastDay)
+      formatDate(firstDay),
+      formatDate(lastDay)
     );
-
   }
 
 
-  /*
-   * ========================================
-   * Benutzerdefinierter Zeitraum
-   * ========================================
+  /**
+   * Loads the evaluation for a custom date range.
+   *
+   * @returns void
    */
+  loadCustomRange(): void {
 
-loadCustomRange(): void {
+    if (this.customForm.invalid) {
 
-  if (this.customForm.invalid) {
+      this.customForm.markAllAsTouched();
+      return;
+    }
 
-    this.customForm.markAllAsTouched();
+    const {
+      from,
+      to
+    } = this.customForm.getRawValue();
 
-    return;
+    if (from > to) {
 
+      this.errorMessage =
+        'Das Startdatum darf nicht nach dem Enddatum liegen.';
+
+      return;
+    }
+
+    this.errorMessage = '';
+    this.customRangeRequested = true;
+    this.currentMode = 'custom';
+
+    this.requestEvaluation(
+      from,
+      to
+    );
   }
 
 
-  const {
-    from,
-    to
-  } = this.customForm.getRawValue();
-
-
-  if (from > to) {
-
-    this.errorMessage =
-      'Das Startdatum darf nicht nach dem Enddatum liegen.';
-
-    return;
-
-  }
-
-
-  this.errorMessage = '';
-
-  this.customRangeRequested = true;
-
-  this.currentMode = 'custom';
-
-
-  this.requestEvaluation(
-    from,
-    to
-  );
-
-}
-
-
-  /*
-   * ========================================
-   * API Request
-   * ========================================
+  /**
+   * Requests an evaluation from the API.
+   *
+   * @param from Start date in YYYY-MM-DD format.
+   * @param to End date in YYYY-MM-DD format.
    */
-
   private requestEvaluation(
     from: string,
     to: string
   ): void {
 
     this.loading = true;
-
     this.errorMessage = '';
-
-
-    /*
-     * Alte Daten entfernen.
-     */
     this.evaluation = null;
 
-
     this.api
-      .getEvaluation(
-        from,
-        to
-      )
+      .getEvaluation(from, to)
       .pipe(
 
         catchError(error => {
@@ -760,75 +447,48 @@ loadCustomRange(): void {
             error
           );
 
-
           this.errorMessage =
             'Die Auswertung konnte nicht geladen werden.';
 
-
           return of(null);
-
         }),
-
 
         finalize(() => {
 
           this.loading = false;
-
           this.cdr.detectChanges();
-
         })
 
       )
       .subscribe(evaluation => {
 
         if (!evaluation) {
-
           return;
-
         }
 
-
-        /*
-         * Nur Tage mit tatsächlichen
-         * Produktions- oder Verkaufswerten.
-         */
         const filteredEvaluation: Evaluation = {
-
           ...evaluation,
-
           daily:
             evaluation.daily.filter(
               day =>
                 day.production > 0 ||
                 day.sale > 0
             )
-
         };
 
-
-        this.evaluation =
-          filteredEvaluation;
-
+        this.evaluation = filteredEvaluation;
 
         this.selectedPeriod =
           this.calculatePeriod(
             filteredEvaluation.daily
           );
 
-
         this.cdr.detectChanges();
-
       });
-
   }
 
 
-  /*
-   * ========================================
-   * Bilanz berechnen
-   * ========================================
-   */
-
+  /** Calculates aggregated production, sales and difference values. */
   private calculatePeriod(
     days: EvaluationDay[]
   ): EvaluationPeriod {
@@ -840,7 +500,6 @@ loadCustomRange(): void {
         0
       );
 
-
     const sale =
       days.reduce(
         (sum, day) =>
@@ -848,138 +507,33 @@ loadCustomRange(): void {
         0
       );
 
-
     return {
-
       production,
-
       sale,
-
-      difference:
-        production - sale
-
+      difference: production - sale
     };
-
   }
 
-
-  /*
-   * ========================================
-   * Heute
-   * ========================================
-   */
-
-  private getToday(): string {
-
-    return this.formatDate(
-      new Date()
-    );
-
-  }
-
-
-  /*
-   * ========================================
-   * Datum parsen
-   * ========================================
-   */
-
-  private parseDate(
-    value: string
-  ): Date {
-
-    const [
-      year,
-      month,
-      day
-    ] =
-      value
-        .split('-')
-        .map(Number);
-
-
-    return new Date(
-      year,
-      month - 1,
-      day
-    );
-
-  }
-
-
-  /*
-   * ========================================
-   * Datum formatieren
-   * ========================================
-   */
-
-  private formatDate(
-    date: Date
-  ): string {
-
-    const year =
-      date.getFullYear();
-
-
-    const month =
-      String(
-        date.getMonth() + 1
-      ).padStart(
-        2,
-        '0'
-      );
-
-
-    const day =
-      String(
-        date.getDate()
-      ).padStart(
-        2,
-        '0'
-      );
-
-
-    return `${year}-${month}-${day}`;
-
-  }
-
-
-  /*
-   * ========================================
-   * Titel
-   * ========================================
-   */
-
+  /** Returns the display title for the active evaluation mode. */
   get modeTitle(): string {
 
     switch (this.currentMode) {
 
       case 'day':
-
         return 'Tagesbilanz';
 
-
       case 'week':
-
         return 'Wochenbilanz';
 
-
       case 'month':
-
         return 'Monatsbilanz';
 
-
       case 'year':
-
         return 'Jahresbilanz';
 
-
       case 'custom':
-
         return 'Benutzerdefinierter Zeitraum';
-
     }
-
   }
 
 }

@@ -18,6 +18,11 @@ import {
   Workstep
 } from '../models/workprocess';
 
+import {
+  getToday
+} from '../shared/utils/date.util';
+
+
 
 @Component({
   selector: 'app-workprocess',
@@ -33,96 +38,85 @@ export class WorkprocessComponent {
   private api = inject(ProductionApiService);
   private cdr = inject(ChangeDetectorRef);
 
+
+  /** Available work steps. */
   worksteps: Workstep[] = [];
 
+  /** Indicates whether work steps are currently loading. */
   workstepsLoading = true;
 
+  /** Success message displayed after a successful submission. */
   successMessage = '';
+
+  /** Error message displayed after a failed operation. */
   errorMessage = '';
 
 
+  /** Form used to create a work process entry. */
   workprocessForm = this.fb.nonNullable.group({
 
-  employee_id: [],
+    employee_id: [],
 
-  workstep_id: [
-    0,
-    [
-      Validators.required,
-      Validators.min(1)
+    workstep_id: [
+      0,
+      [
+        Validators.required,
+        Validators.min(1)
+      ]
+    ],
+
+    duration: [
+      '',
+      Validators.required
+    ],
+
+    amount: [
+      0,
+      [
+        Validators.required,
+        Validators.min(0)
+      ]
+    ],
+
+    day: [
+      getToday(),
+      Validators.required
+    ],
+
+    ignore: [
+      false
     ]
-  ],
 
-  duration: [
-    '',
-    Validators.required
-  ],
-
-  amount: [
-    0,
-    [
-      Validators.required,
-      Validators.min(0)
-    ]
-  ],
-
-  day: [
-    this.getToday(),
-    Validators.required
-  ],
-
-  ignore: [
-    false
-  ]
-
-});
-
-
-   private getToday(): string {
-
-    const today = new Date();
-
-    const year = today.getFullYear();
-    const month = String(
-      today.getMonth() + 1
-    ).padStart(2, '0');
-
-    const day = String(
-      today.getDate()
-    ).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
-
- private durationToMinutes(duration: string): number {
-
-  const [hours, minutes] = duration
-    .split(':')
-    .map(Number);
-
-  return hours * 60 + minutes;
-}
-
-
+  });
 
 
   constructor() {
     this.loadWorksteps();
   }
 
+  /** Converts a HH:mm duration to minutes. */
+  private durationToMinutes(
+    duration: string
+  ): number {
 
+    const [
+      hours,
+      minutes
+    ] =
+      duration
+        .split(':')
+        .map(Number);
+
+    return hours * 60 + minutes;
+  }
+
+
+  /** Loads the available work steps. */
   private loadWorksteps(): void {
-
-    console.log('Lade Worksteps ...');
 
     this.api.getWorksteps().subscribe({
 
       next: worksteps => {
-
-        console.log(
-          'Worksteps erhalten:',
-          worksteps
-        );
 
         this.worksteps = worksteps;
         this.workstepsLoading = false;
@@ -149,6 +143,7 @@ export class WorkprocessComponent {
   }
 
 
+  /** Creates a work process entry from the form data. */
   submit(): void {
 
     this.successMessage = '';
@@ -157,31 +152,20 @@ export class WorkprocessComponent {
     if (this.workprocessForm.invalid) {
 
       this.workprocessForm.markAllAsTouched();
-
       return;
     }
 
-
-    const formValue = this.workprocessForm.getRawValue();
+    const formValue =
+      this.workprocessForm.getRawValue();
 
     const data = {
-  ...formValue,
-
-  duration: this.durationToMinutes(
-    formValue.duration
-  ),
-
-  ignore: false
-};
-
-
-
-
-    console.log(
-      'Sende Workprozess:',
-      data
-    );
-
+      ...formValue,
+      duration:
+        this.durationToMinutes(
+          formValue.duration
+        ),
+      ignore: false
+    };
 
     this.api.createWorkprocess(data).subscribe({
 
@@ -195,17 +179,14 @@ export class WorkprocessComponent {
         this.successMessage =
           'Der Workprozess wurde erfolgreich gespeichert.';
 
-
         this.workprocessForm.reset({
           workstep_id: 0,
           duration: '',
           amount: 0,
-          day: this.getToday(),
+          day: getToday(),
           ignore: false
         });
-
       },
-
 
       error: error => {
 
@@ -216,7 +197,6 @@ export class WorkprocessComponent {
 
         this.errorMessage =
           'Der Arbeitsprozess konnte nicht gespeichert werden.';
-
       }
 
     });

@@ -1,0 +1,149 @@
+<h1>Arbeitsprozess erfassen</h1>
+
+
+@if (successMessage) {
+
+  <div class="message success">
+    {{ successMessage }}
+  </div>
+
+}
+
+
+@if (errorMessage) {
+
+  <div class="message error">
+    {{ errorMessage }}
+  </div>
+
+}
+
+
+<form
+  [formGroup]="workprocessForm"
+  (ngSubmit)="submit()"
+>
+
+
+  <!-- Arbeitsschritt -->
+
+  <label for="workstep">
+    Arbeitsschritt
+  </label>
+
+  <small>
+    Wählen Sie den ausgeführten Arbeitsschritt aus.
+  </small>
+
+  <div class="select-wrapper">
+
+    @if (workstepsLoading) {
+
+      <select
+        id="workstep"
+        disabled
+      >
+
+        <option>
+          Arbeitsschritte werden geladen ...
+        </option>
+
+      </select>
+
+    } @else {
+
+      <select
+        id="workstep"
+        formControlName="workstep_id"
+      >
+
+        <option
+          [ngValue]="0"
+          disabled
+        >
+          Arbeitsschritt auswählen
+        </option>
+
+
+        @for (
+          workstep of worksteps;
+          track workstep.id
+        ) {
+
+          <option [ngValue]="workstep.id">
+            {{ workstep.name }}
+          </option>
+
+        }
+
+      </select>
+
+    }
+
+  </div>
+
+
+  <!-- Dauer -->
+
+  <label for="duration">
+    Dauer
+  </label>
+
+  <small>
+    Bitte die Arbeitszeit im Format HH:MM eingeben, z. B. 02:30 für 2 Stunden und 30 Minuten.
+  </small>
+
+  <input
+    id="duration"
+    type="time"
+    formControlName="duration"
+  />
+
+
+  <!-- Menge -->
+
+  <label for="amount">
+    Menge
+  </label>
+
+  <small>
+    Geben Sie die Anzahl der bearbeiteten Einheiten ein, z. B. 10.
+  </small>
+
+  <input
+    id="amount"
+    type="number"
+    min="0"
+    step="1"
+    formControlName="amount"
+    placeholder="z. B. 100"
+  />
+
+
+  <!-- Tag -->
+
+  <label for="day">
+    Tag
+  </label>
+
+  <small>
+    Geben Sie den Tag an, an dem dies durchgeführt wurde. Das Format ist TT.MM.YYYY.
+  </small>
+
+  <input
+    id="day"
+    type="date"
+    formControlName="day"
+  />
+
+
+  <!-- Absenden -->
+
+  <button
+    type="submit"
+    [disabled]="workstepsLoading"
+  >
+    Arbeitsprozess speichern
+  </button>
+
+</form>

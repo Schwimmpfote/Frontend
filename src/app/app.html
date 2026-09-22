@@ -1,171 +1,19 @@
-<h1>Arbeitsprozess erfassen</h1>
+<nav class="main-navigation">
 
-@if (successMessage) {
-  <div class="message success">
-    {{ successMessage }}
-  </div>
-}
+  <a routerLink="/workprocess">
+    Arbeitsprozess
+  </a>
 
+  <a routerLink="/performance_record">
+    Performance
+  </a>
+  <a routerLink="/evaluation">
+    Evaluation
+  </a>
 
-@if (errorMessage) {
-  <div class="message error">
-    {{ errorMessage }}
-  </div>
-}
-
-
-<form
-  [formGroup]="workprocessForm"
-  (ngSubmit)="submit()"
->
-
-  <!-- Mitarbeiter -->
-
-  <label for="employee">
-    Mitarbeiter
-  </label>
-
-  <div class="select-wrapper">
-
-    @if (employeesLoading) {
-
-      <select
-        id="employee"
-        disabled
-      >
-        <option>
-          Mitarbeiter werden geladen ...
-        </option>
-      </select>
-
-    } @else {
-
-      <select
-        id="employee"
-        formControlName="employee_id"
-      >
-
-        <option
-          [ngValue]="0"
-          disabled
-        >
-          Mitarbeiter auswählen
-        </option>
-
-        @for (employee of employees; track employee.id) {
-
-          <option [ngValue]="employee.id">
-            {{ employee.name }}
-          </option>
-
-        }
-
-      </select>
-
-    }
-
-  </div>
+</nav>
 
 
-  <!-- Arbeitsschritt -->
-
-  <label for="workstep">
-    Arbeitsschritt
-  </label>
-
-  <div class="select-wrapper">
-
-    @if (workstepsLoading) {
-
-      <select
-        id="workstep"
-        disabled
-      >
-        <option>
-          Arbeitsschritte werden geladen ...
-        </option>
-      </select>
-
-    } @else {
-
-      <select
-        id="workstep"
-        formControlName="workstep_id"
-      >
-
-        <option
-          [ngValue]="0"
-          disabled
-        >
-          Arbeitsschritt auswählen
-        </option>
-
-        @for (workstep of worksteps; track workstep.id) {
-
-          <option [ngValue]="workstep.id">
-            {{ workstep.name }}
-          </option>
-
-        }
-
-      </select>
-
-    }
-
-  </div>
-
-
-  <!-- Dauer -->
-
-  <label for="duration">
-    Dauer
-  </label>
-
-  <input
-    id="duration"
-    type="number"
-    min="0"
-    step="0.01"
-    formControlName="duration"
-    placeholder="z. B. 2,5"
-  />
-
-
-  <!-- Menge -->
-
-  <label for="amount">
-    Menge
-  </label>
-
-  <input
-    id="amount"
-    type="number"
-    min="0"
-    formControlName="amount"
-    placeholder="z. B. 100"
-  />
-
-
-  <!-- Tag -->
-
-  <label for="day">
-    Tag
-  </label>
-
-  <input
-    id="day"
-    type="date"
-    formControlName="day"
-  />
-
-
-  <!-- Absenden -->
-
-  <button
-    type="submit"
-    [disabled]="employeesLoading || workstepsLoading"
-  >
-    Arbeitsprozess speichern
-  </button>
-
-</form>
+<main>
+  <router-outlet></router-outlet>
+</main>

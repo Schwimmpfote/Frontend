@@ -1,35 +1,28 @@
 :host {
   display: block;
   min-height: 100vh;
-
   background-color: #f5f7fa;
 }
-
 
 .main-navigation {
   display: flex;
   align-items: center;
-
   gap: 8px;
 
   padding: 16px 20px;
 
   background-color: #ffffff;
-
   border-bottom: 1px solid #e2e8f0;
 }
-
 
 .main-navigation a {
   padding: 9px 14px;
 
   color: #334155;
-
   border-radius: 6px;
 
   font-size: 14px;
   font-weight: 600;
-
   text-decoration: none;
 
   transition:
@@ -37,13 +30,10 @@
     color 0.15s ease;
 }
 
-
 .main-navigation a:hover {
   color: #1d4ed8;
-
   background-color: #eff6ff;
 }
-
 
 main {
   width: 100%;

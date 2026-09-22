@@ -1,539 +1,276 @@
-<nav class="period-navigation">
+<nav class="period-navigation" aria-label="Auswertungszeitraum"> <button type="button"
+    [class.active]="currentMode === 'day'" (click)="selectMode('day')"> Tag </button>
 
-  <button
-    type="button"
-    [class.active]="currentMode === 'day'"
-    (click)="selectMode('day')"
-  >
-    Tag
+  <button type="button" [class.active]="currentMode === 'week'" (click)="selectMode('week')"> Woche </button>
+
+  <button type="button" [class.active]="currentMode === 'month'" (click)="selectMode('month')"> Monat </button>
+
+  <button type="button" [class.active]="currentMode === 'year'" (click)="selectMode('year')"> Jahr </button>
+
+  <button type="button" [class.active]="currentMode === 'custom'" (click)="selectMode('custom')"> Zeitraum
   </button>
-
-
-  <button
-    type="button"
-    [class.active]="currentMode === 'week'"
-    (click)="selectMode('week')"
-  >
-    Woche
-  </button>
-
-
-  <button
-    type="button"
-    [class.active]="currentMode === 'month'"
-    (click)="selectMode('month')"
-  >
-    Monat
-  </button>
-
-
-  <button
-    type="button"
-    [class.active]="currentMode === 'year'"
-    (click)="selectMode('year')"
-  >
-    Jahr
-  </button>
-
-
-  <button
-    type="button"
-    [class.active]="currentMode === 'custom'"
-    (click)="selectMode('custom')"
-  >
-    Zeitraum
-  </button>
-
-</nav>
-
-
-<!-- ======================================
-     TAG
-======================================= -->
+</nav> <!-- Zeitraum auswählen -->
 
 @if (currentMode === 'day') {
 
-  <div class="period-selector">
+<div class="period-selector"> <label for="selectedDate"> Tag </label>
+  <input id="selectedDate" type="date" [formControl]="customForm.controls.selectedDate" (change)="onDateChange()" />
 
-    <label for="selectedDate">
-      Tag
-    </label>
-
-
-    <input
-      id="selectedDate"
-      type="date"
-      [formControl]="customForm.controls.selectedDate"
-      (change)="onDateChange()"
-    />
-
-  </div>
-
-}
-
-
-<!-- ======================================
-     WOCHE
-======================================= -->
+</div> }
 
 @if (currentMode === 'week') {
 
-  <div class="period-selector">
+<div class="period-selector"> <label for="selectedWeek"> Woche auswählen </label>
+  <input id="selectedWeek" type="date" [formControl]="customForm.controls.selectedDate" (change)="onDateChange()" />
 
-    <label for="selectedWeek">
-      Woche auswählen
-    </label>
+  <span>
+    Die Woche des ausgewählten Tages wird angezeigt.
+  </span>
 
-
-    <input
-      id="selectedWeek"
-      type="date"
-      [formControl]="customForm.controls.selectedDate"
-      (change)="onDateChange()"
-    />
-
-
-    <span>
-      Die Woche des ausgewählten Tages wird angezeigt.
-    </span>
-
-  </div>
-
-}
-
-
-<!-- ======================================
-     MONAT
-======================================= -->
+</div> }
 
 @if (currentMode === 'month') {
 
-  <div class="period-selector month-selector">
+<div class="period-selector month-selector"> <label> Monat auswählen </label>
+  <div class="month-fields">
+    <select aria-label="Monat auswählen" [formControl]="customForm.controls.selectedMonth" (change)="onMonthChange()">
+      <option [ngValue]="0">
+        Januar
+      </option>
 
-    <label>
-      Monat auswählen
-    </label>
+      <option [ngValue]="1">
+        Februar
+      </option>
 
+      <option [ngValue]="2">
+        März
+      </option>
 
-    <div class="month-fields">
+      <option [ngValue]="3">
+        April
+      </option>
 
-      <!-- ==================================
-           MONAT
-      =================================== -->
+      <option [ngValue]="4">
+        Mai
+      </option>
 
-      <select
-        aria-label="Monat auswählen"
-        [formControl]="customForm.controls.selectedMonth"
-        (change)="onMonthChange()"
-      >
+      <option [ngValue]="5">
+        Juni
+      </option>
 
-        <option [ngValue]="0">
-          Januar
-        </option>
+      <option [ngValue]="6">
+        Juli
+      </option>
 
-        <option [ngValue]="1">
-          Februar
-        </option>
+      <option [ngValue]="7">
+        August
+      </option>
 
-        <option [ngValue]="2">
-          März
-        </option>
+      <option [ngValue]="8">
+        September
+      </option>
 
-        <option [ngValue]="3">
-          April
-        </option>
+      <option [ngValue]="9">
+        Oktober
+      </option>
 
-        <option [ngValue]="4">
-          Mai
-        </option>
+      <option [ngValue]="10">
+        November
+      </option>
 
-        <option [ngValue]="5">
-          Juni
-        </option>
+      <option [ngValue]="11">
+        Dezember
+      </option>
+    </select>
 
-        <option [ngValue]="6">
-          Juli
-        </option>
-
-        <option [ngValue]="7">
-          August
-        </option>
-
-        <option [ngValue]="8">
-          September
-        </option>
-
-        <option [ngValue]="9">
-          Oktober
-        </option>
-
-        <option [ngValue]="10">
-          November
-        </option>
-
-        <option [ngValue]="11">
-          Dezember
-        </option>
-
-      </select>
-
-
-      <!-- ==================================
-           JAHR
-      =================================== -->
-
-      <select
-        aria-label="Jahr auswählen"
-        [formControl]="customForm.controls.selectedMonthYear"
-        (change)="onMonthYearChange()"
-      >
-
-        @for (
-          year of availableYears;
-          track year
-        ) {
-
-          <option [ngValue]="year">
-            {{ year }}
-          </option>
-
-        }
-
-      </select>
-
-    </div>
-
+    <select aria-label="Jahr auswählen" [formControl]="customForm.controls.selectedMonthYear"
+      (change)="onMonthYearChange()">
+      @for (
+      year of availableYears;
+      track year
+      ) {
+      <option [ngValue]="year">
+        {{ year }}
+      </option>
+      }
+    </select>
   </div>
 
-}
-
-
-<!-- ======================================
-     JAHR
-======================================= -->
+</div> }
 
 @if (currentMode === 'year') {
 
-  <div class="period-selector">
+<div class="period-selector"> <label for="selectedYearInput"> Jahr auswählen </label>
+  <input id="selectedYearInput" type="number" min="2000" max="2100" [value]="selectedMonthYear" (change)="
+    customForm.controls.selectedDate.setValue(
+      $any($event.target).value + '-01-01'
+    );
+    onDateChange()
+  " />
 
-    <label for="selectedYearInput">
-      Jahr auswählen
-    </label>
-
-
-    <input
-      id="selectedYearInput"
-      type="number"
-      min="2000"
-      max="2100"
-      [value]="selectedMonthYear"
-      (change)="
-        customForm.controls.selectedDate.setValue(
-          $any($event.target).value + '-01-01'
-        );
-        onDateChange()
-      "
-    />
-
-  </div>
-
-}
-
-<!-- ======================================
-     BENUTZERDEFINIERTER ZEITRAUM
-======================================= -->
+</div> }
 
 @if (currentMode === 'custom') {
 
-  <form
-    [formGroup]="customForm"
-    (ngSubmit)="loadCustomRange()"
-    class="custom-range"
-  >
+<!-- Benutzerdefinierter Zeitraum -->
+<form [formGroup]="customForm" (ngSubmit)="loadCustomRange()" class="custom-range">
+  <div> <label for="from"> Von </label>
+    <input id="from" type="date" formControlName="from" />
+  </div>
 
-    <div>
+  <div>
+    <label for="to">
+      Bis
+    </label>
 
-      <label for="from">
-        Von
-      </label>
+    <input id="to" type="date" formControlName="to" />
+  </div>
 
-      <input
-        id="from"
-        type="date"
-        formControlName="from"
-      />
+  <button type="submit" [disabled]="loading">
+    Zeitraum anzeigen
+  </button>
 
-    </div>
+</form>
 
-
-    <div>
-
-      <label for="to">
-        Bis
-      </label>
-
-      <input
-        id="to"
-        type="date"
-        formControlName="to"
-      />
-
-    </div>
-
-
-    <button
-      type="submit"
-      [disabled]="loading"
-    >
-      Zeitraum anzeigen
-    </button>
-
-  </form>
-
-
-  @if (!customRangeRequested && !loading) {
-
-    <div class="info-message">
-
-      Bitte wählen Sie zunächst ein Start- und Enddatum
-      aus und klicken Sie anschließend auf
-      „Zeitraum anzeigen“.
-
-    </div>
-
-  }
-
+@if (!customRangeRequested && !loading) {
+<div class="info-message">
+  Bitte wählen Sie zunächst ein Start- und Enddatum
+  aus und klicken Sie anschließend auf
+  „Zeitraum anzeigen“.
+</div>
+}
 }
 
-
-<!-- ======================================
-     FEHLER
-======================================= -->
+<!-- Status -->
 
 @if (errorMessage) {
 
-  <div class="message error">
-    {{ errorMessage }}
-  </div>
-
-}
-
-
-<!-- ======================================
-     LOADING
-======================================= -->
+<div class="message error"> {{ errorMessage }} </div> }
 
 @if (loading) {
 
-  <div class="loading">
-    Auswertung wird geladen ...
-  </div>
-
-}
-
-
-<!-- ======================================
-     AUSWERTUNG
-======================================= -->
+<div class="loading"> Auswertung wird geladen ... </div> } <!-- Auswertung -->
 
 @if (evaluation) {
 
-  <!-- ====================================
-       KENNZAHLEN
-  ===================================== -->
+<section>
+  <h2> {{ modeTitle }} </h2>
+  <div class="cards">
+    <div class="card production">
+      <span>
+        Produktion
+      </span>
 
-  <section>
-
-    <h2>
-      {{ modeTitle }}
-    </h2>
-
-
-    <div class="cards">
-
-      <div class="card production">
-
-        <span>
-          Produktion
-        </span>
-
-
-        <strong>
-          {{ selectedPeriod.production }}
-        </strong>
-
-      </div>
-
-
-      <div class="card sale">
-
-        <span>
-          Verkauf
-        </span>
-
-
-        <strong>
-          {{ selectedPeriod.sale }}
-        </strong>
-
-      </div>
-
-
-      <div class="card difference">
-
-        <span>
-          Differenz
-        </span>
-
-
-        <strong>
-          {{ selectedPeriod.difference }}
-        </strong>
-
-      </div>
-
+      <strong>
+        {{ selectedPeriod.production }}
+      </strong>
     </div>
 
-  </section>
+    <div class="card sale">
+      <span>
+        Verkauf
+      </span>
 
-
-  <!-- ====================================
-       ARBEITSSCHRITTE
-  ===================================== -->
-
-  <section>
-
-    <h2>
-      Auswertung nach Arbeitsschritt
-    </h2>
-
-
-    <div class="table-wrapper">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Arbeitsschritt</th>
-            <th>Dauer</th>
-            <th>Menge</th>
-            <th>Dauer / Stück</th>
-          </tr>
-
-        </thead>
-
-
-        <tbody>
-
-          @for (
-            workstep of evaluation.worksteps;
-            track workstep.workstep_id
-          ) {
-
-            <tr>
-
-              <td>
-                {{ workstep.name }}
-              </td>
-
-
-              <td>
-                {{ workstep.duration }} min
-              </td>
-
-
-              <td>
-                {{ workstep.amount }}
-              </td>
-
-
-              <td>
-                {{
-                  workstep.duration_per_piece
-                    | number:'1.2-2'
-                }}
-                min
-              </td>
-
-            </tr>
-
-          }
-
-        </tbody>
-
-      </table>
-
+      <strong>
+        {{ selectedPeriod.sale }}
+      </strong>
     </div>
 
-  </section>
+    <div class="card difference">
+      <span>
+        Differenz
+      </span>
 
-
-  <!-- ====================================
-       TAGESWERTE
-  ===================================== -->
-
-  <section>
-
-    <h2>
-      Tagesübersicht
-    </h2>
-
-
-    <div class="table-wrapper">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Tag</th>
-            <th>Produktion</th>
-            <th>Verkauf</th>
-            <th>Differenz</th>
-          </tr>
-
-        </thead>
-
-
-        <tbody>
-
-          @for (
-            day of evaluation.daily;
-            track day.day
-          ) {
-
-            <tr>
-
-              <td>
-                {{ day.day }}
-              </td>
-
-
-              <td>
-                {{ day.production }}
-              </td>
-
-
-              <td>
-                {{ day.sale }}
-              </td>
-
-
-              <td>
-                {{ day.difference }}
-              </td>
-
-            </tr>
-
-          }
-
-        </tbody>
-
-      </table>
-
+      <strong>
+        {{ selectedPeriod.difference }}
+      </strong>
     </div>
+  </div>
 
-  </section>
+</section>
+<section>
+  <h2> Auswertung nach Arbeitsschritt </h2>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Arbeitsschritt</th>
+          <th>Dauer</th>
+          <th>Menge</th>
+          <th>Dauer / Stück</th>
+        </tr>
+      </thead>
 
-}
+      <tbody>
+        @for (
+        workstep of evaluation.worksteps;
+        track workstep.workstep_id
+        ) {
+        <tr>
+          <td>
+            {{ workstep.name }}
+          </td>
+
+          <td>
+            {{ workstep.duration }} min
+          </td>
+
+          <td>
+            {{ workstep.amount }}
+          </td>
+
+          <td>
+            {{
+            workstep.duration_per_piece
+            | number:'1.2-2'
+            }}
+            min
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</section>
+<section>
+  <h2> Tagesübersicht </h2>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Tag</th>
+          <th>Produktion</th>
+          <th>Verkauf</th>
+          <th>Differenz</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (
+        day of evaluation.daily;
+        track day.day
+        ) {
+        <tr>
+          <td>
+            {{ day.day }}
+          </td>
+
+          <td>
+            {{ day.production }}
+          </td>
+
+          <td>
+            {{ day.sale }}
+          </td>
+
+          <td>
+            {{ day.difference }}
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</section> }

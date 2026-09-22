@@ -1,8 +1,8 @@
 :host {
     /**
-     * Stellt den grundlegenden Seitenbereich bereit und sorgt dafür,
-     * dass der Inhalt mindestens die gesamte verfügbare Bildschirmhöhe einnimmt.
-     */
+* Defines the component's main page area and ensures that
+* the content occupies at least the full available viewport height.
+*/
     display: block;
     min-height: 100vh;
 
@@ -10,13 +10,15 @@
     box-sizing: border-box;
 
     color: var(--color-text);
+
+
 }
 
 .period-navigation {
     /**
-     * Ordnet die verfügbaren Zeitraumoptionen gleichmäßig in einer
-     * horizontalen Navigationsleiste an und begrenzt deren maximale Breite.
-     */
+* Arranges the available period options evenly in a
+* horizontal navigation bar and limits its maximum width.
+*/
     width: 100%;
     max-width: 1100px;
 
@@ -31,13 +33,15 @@
 
     background-color: var(--color-border-light);
     border-radius: 10px;
+
+
 }
 
 .period-navigation button {
     /**
-     * Vereinheitlicht die Darstellung der einzelnen Zeitraumoptionen
-     * und ermöglicht eine flächige Ausrichtung innerhalb des Navigationsrasters.
-     */
+* Standardizes the appearance of the individual period options
+* and allows them to fill the available space within the navigation grid.
+*/
     width: 100%;
 
     margin: 0;
@@ -58,31 +62,33 @@
     transition:
         background-color 0.15s ease,
         color 0.15s ease;
+
+
 }
 
 .period-navigation button:hover {
     /**
-     * Hebt eine Zeitraumoption beim Überfahren hervor,
-     * ohne den aktiven Zustand vorwegzunehmen.
-     */
+* Highlights a period option when hovered
+* without indicating it as the active selection.
+*/
     color: var(--color-text);
     background-color: var(--color-surface);
 }
 
 .period-navigation button.active {
     /**
-     * Kennzeichnet die aktuell ausgewählte Zeitraumoption
-     * durch die primäre Akzentfarbe und einen kontrastreichen Text.
-     */
+* Marks the currently selected period option
+* using the primary accent color and contrasting text.
+*/
     color: #ffffff;
     background-color: var(--color-primary);
 }
 
 .period-selector {
     /**
-     * Bildet einen eigenständigen Bereich für zusätzliche Zeitraumangaben
-     * und richtet dessen Inhalte horizontal innerhalb der verfügbaren Breite aus.
-     */
+* Creates a dedicated area for additional period settings
+* and aligns its contents horizontally within the available width.
+*/
     width: 100%;
     max-width: 1100px;
 
@@ -100,41 +106,45 @@
     border-radius: 10px;
 
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+
+
 }
 
 .period-selector label {
     /**
-     * Verhindert, dass die Beschriftung bei der flexiblen Anordnung
-     * unnötig verkleinert wird.
-     */
+* Prevents the label from being unnecessarily reduced
+* when the elements are arranged using flexbox.
+*/
     flex-shrink: 0;
 }
 
 .period-selector input {
     /**
-     * Ermöglicht eine kompakte Eingabedarstellung mit einer Mindestbreite,
-     * während das Feld seine Breite nicht automatisch auf den gesamten Container ausdehnt.
-     */
+* Provides a compact input layout with a minimum width
+* while preventing the field from automatically filling the entire container.
+*/
     width: auto;
     min-width: 180px;
     height: 42px;
 
     padding: 0 12px;
+
+
 }
 
 .month-selector {
     /**
-     * Richtet die Elemente der Monatsauswahl am Anfang der verfügbaren
-     * horizontalen Ausrichtung aus.
-     */
+* Aligns the elements of the month selector
+* to the start of the available horizontal space.
+*/
     justify-content: flex-start;
 }
 
 .month-fields {
     /**
-     * Gruppiert die Monats- und Jahresfelder in einem begrenzten Raster,
-     * dessen Spalten unterschiedliche Mindestbreiten erhalten.
-     */
+* Groups the month and year fields in a constrained grid
+* with different minimum widths assigned to the columns.
+*/
     width: 100%;
     max-width: 360px;
 
@@ -143,33 +153,37 @@
         minmax(180px, 1fr) minmax(120px, 160px);
 
     gap: 10px;
+
+
 }
 
 .month-fields select {
     /**
-     * Passt die Auswahlfelder an die kompaktere Darstellung der Monatsauswahl an.
-     */
+* Adjusts the select fields to the more compact layout of the month selector.
+*/
     height: 42px;
 
     padding: 0 42px 0 12px;
 
     font-size: 14px;
+
+
 }
 
 .period-selector span {
     /**
-     * Stellt ergänzende Informationen innerhalb der Zeitraumsteuerung
-     * optisch zurückhaltend dar.
-     */
+* Displays additional information within the period controls
+* in a visually subtle manner.
+*/
     color: var(--color-text-light);
     font-size: 13px;
 }
 
 .custom-range {
     /**
-     * Ordnet die Eingaben für einen frei definierbaren Zeitraum zusammen
-     * mit der zugehörigen Aktion in einem responsiven Raster an.
-     */
+* Arranges the inputs for a custom date range together with the
+* associated action in a responsive grid layout.
+*/
     width: 100%;
     max-width: 1100px;
 
@@ -188,13 +202,15 @@
     border-radius: 12px;
 
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+
 }
 
 .custom-range>div {
     /**
-     * Stapelt die zu einem Eingabefeld gehörende Beschriftung und Eingabe
-     * vertikal und hält deren Abstand unabhängig vom Inhalt konstant.
-     */
+* Stacks the label and input belonging to each field vertically
+* and keeps their spacing consistent regardless of the content.
+*/
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -202,20 +218,22 @@
 
 .custom-range button {
     /**
-     * Gibt der Aktion innerhalb des Rasters eine definierte Mindestbreite,
-     * ohne sie unnötig auf die gesamte verfügbare Fläche auszudehnen.
-     */
+* Gives the action a defined minimum width within the grid
+* without unnecessarily expanding it across the available space.
+*/
     width: auto;
     min-width: 180px;
 
     margin-top: 0;
+
+
 }
 
 .loading {
     /**
-     * Reserviert einen eigenständigen Bereich für den Ladezustand
-     * und positioniert dessen Hinweis mittig innerhalb des Inhaltsbereichs.
-     */
+* Reserves a dedicated area for the loading state
+* and centers its message within the content area.
+*/
     width: 100%;
     max-width: 1100px;
 
@@ -231,13 +249,15 @@
     background-color: var(--color-surface);
     border: 1px solid var(--color-border-light);
     border-radius: 10px;
+
+
 }
 
 section {
     /**
-     * Definiert die gemeinsame visuelle Oberfläche der Inhaltsbereiche
-     * und sorgt für eine einheitliche maximale Breite innerhalb der Seite.
-     */
+* Defines the shared visual surface of the content sections
+* and provides a consistent maximum width throughout the page.
+*/
     width: 100%;
     max-width: 1100px;
 
@@ -251,26 +271,30 @@ section {
     border-radius: 12px;
 
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+
 }
 
 section h2 {
     /**
-     * Trennt die Abschnittsüberschrift optisch vom darunterliegenden Inhalt
-     * und definiert eine einheitliche Hierarchie innerhalb der Inhaltsbereiche.
-     */
+* Visually separates the section heading from the content below
+* and establishes a consistent hierarchy within the content areas.
+*/
     margin: 0 0 20px;
 
     color: var(--color-text);
 
     font-size: 20px;
     font-weight: 600;
+
+
 }
 
 .cards {
     /**
-     * Verteilt die Kennzahlenkarten gleichmäßig auf drei Spalten
-     * und verhindert durch die Mindestbreite ein unerwünschtes Überlaufen.
-     */
+* Distributes the metric cards evenly across three columns
+* and prevents unwanted overflow through the minimum width.
+*/
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
@@ -278,9 +302,9 @@ section h2 {
 
 .card {
     /**
-     * Zentriert den Inhalt der Kennzahlenkarte vertikal und stellt
-     * für alle Karten eine einheitliche Mindesthöhe bereit.
-     */
+* Centers the card content vertically and provides
+* a consistent minimum height for all cards.
+*/
     min-height: 110px;
 
     padding: 20px;
@@ -295,91 +319,101 @@ section h2 {
     background-color: var(--color-surface-muted);
     border: 1px solid var(--color-border-light);
     border-radius: 10px;
+
+
 }
 
 .card span {
     /**
-     * Stellt die Bezeichnung einer Kennzahl gegenüber ihrem eigentlichen
-     * Zahlenwert visuell in den Hintergrund.
-     */
+* Visually de-emphasizes the metric label compared to
+* its actual numerical value.
+*/
     color: var(--color-text-light);
 
     font-size: 14px;
     font-weight: 500;
+
+
 }
 
 .card strong {
     /**
-     * Hebt den eigentlichen Kennzahlenwert durch eine größere und stärkere
-     * Schrift deutlich gegenüber der zugehörigen Bezeichnung hervor.
-     */
+* Clearly emphasizes the actual metric value through
+* a larger and heavier font compared to its label.
+*/
     color: var(--color-text);
 
     font-size: 28px;
     font-weight: 700;
+
+
 }
 
 .card.production {
     /**
-     * Kennzeichnet Produktionswerte mit einem eigenen Farbakzent,
-     * ohne die grundlegende Kartenstruktur zu verändern.
-     */
+* Marks production values with a dedicated color accent
+* without changing the underlying card structure.
+*/
     border-left: 4px solid var(--color-primary);
 }
 
 .card.sale {
     /**
-     * Verwendet einen grünen Seitenakzent zur visuellen Unterscheidung
-     * von Verkaufskennzahlen.
-     */
+* Uses a green side accent to visually distinguish
+* sales-related metrics.
+*/
     border-left: 4px solid #16a34a;
 }
 
 .card.difference {
     /**
-     * Hebt Differenzwerte mit einem separaten Farbakzent hervor,
-     * damit sie unmittelbar von Produktions- und Verkaufswerten unterscheidbar sind.
-     */
+* Highlights difference values with a separate color accent
+* so they can be immediately distinguished from production and sales values.
+*/
     border-left: 4px solid #f59e0b;
 }
 
 .table-wrapper {
     /**
-     * Erlaubt bei Tabellen mit vielen Spalten horizontales Scrollen,
-     * ohne den übergeordneten Inhaltsbereich zu verbreitern.
-     */
+* Allows horizontal scrolling for tables with many columns
+* without expanding the width of the surrounding content area.
+*/
     width: 100%;
 
     overflow-x: auto;
 
     border: 1px solid var(--color-border-light);
     border-radius: 8px;
+
+
 }
 
 table {
     /**
-     * Sorgt für eine vollständige Ausnutzung des verfügbaren Bereichs
-     * und verhindert bei kleinen Tabellenbreiten eine zu starke Verdichtung.
-     */
+* Ensures full use of the available space and prevents
+* excessive compression when the table has few columns.
+*/
     width: 100%;
     min-width: 650px;
 
     border-collapse: collapse;
+
+
 }
 
 thead {
     /**
-     * Setzt den Tabellenkopf durch einen dezenten Hintergrund vom
-     * eigentlichen Tabelleninhalt ab.
-     */
+* Separates the table header from the actual table content
+* using a subtle background color.
+*/
     background-color: var(--color-surface-muted);
 }
 
 th {
     /**
-     * Formatiert Spaltenüberschriften kompakt und verhindert,
-     * dass längere Bezeichnungen innerhalb einer Spalte umbrechen.
-     */
+* Formats column headings compactly and prevents
+* longer labels from wrapping within a column.
+*/
     padding: 13px 14px;
 
     color: var(--color-text-muted);
@@ -391,13 +425,15 @@ th {
     white-space: nowrap;
 
     border-bottom: 1px solid var(--color-border-light);
+
+
 }
 
 td {
     /**
-     * Definiert die Abstände und die visuelle Trennung der einzelnen
-     * Datenzellen innerhalb des Tabellenkörpers.
-     */
+* Defines spacing and visual separation for the individual
+* data cells within the table body.
+*/
     padding: 13px 14px;
 
     color: var(--color-text-secondary);
@@ -405,50 +441,54 @@ td {
     font-size: 14px;
 
     border-bottom: 1px solid var(--color-border-subtle);
+
+
 }
 
 tbody tr:last-child td {
     /**
-     * Entfernt die untere Trennlinie der letzten Datenzeile,
-     * damit sie nicht zusätzlich zum Rahmen des Tabellencontainers erscheint.
-     */
+* Removes the bottom border from the last data row
+* so that it does not appear in addition to the table container border.
+*/
     border-bottom: none;
 }
 
 tbody tr:hover {
     /**
-     * Hebt die aktuell überfahrene Datenzeile dezent hervor,
-     * um die Orientierung innerhalb größerer Tabellen zu erleichtern.
-     */
+* Subtly highlights the currently hovered data row
+* to make navigation within larger tables easier.
+*/
     background-color: var(--color-surface-muted);
 }
 
 th:nth-child(n + 2),
 td:nth-child(n + 2) {
     /**
-     * Richtet alle Spalten ab der zweiten Spalte rechtsbündig aus,
-     * was insbesondere die Vergleichbarkeit numerischer Werte verbessert.
-     */
+* Right-aligns all columns starting from the second column,
+* which improves the comparability of numerical values in particular.
+*/
     text-align: right;
 }
 
 tbody:empty::after {
     /**
-     * Zeigt einen verständlichen Hinweis an, wenn der Tabellenkörper
-     * keine Datenzeilen enthält.
-     */
+* Displays a clear message when the table body
+* contains no data rows.
+*/
     content: "Keine Daten vorhanden.";
 
     display: table-row;
 
     color: var(--color-text-light);
+
+
 }
 
 .info-message {
     /**
-     * Formatiert ergänzende Hinweise als eigenständigen Inhaltsbereich
-     * und hält dessen Breite an die übrigen Seitenelemente angepasst.
-     */
+* Formats additional information as a separate content area
+* and keeps its width aligned with the other page elements.
+*/
     width: 100%;
     max-width: 1100px;
 
@@ -464,14 +504,16 @@ tbody:empty::after {
     border-radius: 8px;
 
     font-size: 14px;
+
+
 }
 
 @media (max-width: 800px) {
 
     /**
-     * Reduziert auf mittelgroßen Bildschirmen die Außenabstände und
-     * wechselt die Kennzahlenkarten in eine einspaltige Darstellung.
-     */
+ * Reduces the outer spacing on medium-sized screens and
+ * changes the metric cards to a single-column layout.
+ */
     :host {
         padding: 24px 12px;
     }
@@ -487,14 +529,16 @@ tbody:empty::after {
     .card {
         min-height: 90px;
     }
+
+
 }
 
 @media (max-width: 700px) {
 
     /**
-     * Passt Navigation, benutzerdefinierte Zeiträume und Auswahlfelder
-     * an schmalere Bildschirmbreiten an, indem horizontale Bereiche gestapelt werden.
-     */
+ * Adapts navigation, custom date ranges, and selection fields
+ * to narrower screen widths by stacking horizontal areas.
+ */
     .period-navigation {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -525,14 +569,16 @@ tbody:empty::after {
         max-width: none;
         grid-template-columns: 1fr;
     }
+
+
 }
 
 @media (max-width: 600px) {
 
     /**
-     * Verdichtet die Abstände und Schriftgrößen für sehr kleine Displays,
-     * damit die wesentlichen Inhalte weiterhin komfortabel nutzbar bleiben.
-     */
+ * Reduces spacing and font sizes for very small displays
+ * so that the essential content remains comfortable to use.
+ */
     :host {
         padding: 20px 12px;
     }
@@ -552,4 +598,6 @@ tbody:empty::after {
     table {
         min-width: 600px;
     }
+
+
 }

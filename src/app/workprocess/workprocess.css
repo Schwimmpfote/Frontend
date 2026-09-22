@@ -1,71 +1,83 @@
 :host {
-  /**
-   * Definiert den äußeren Layoutbereich der Komponente und stellt sicher,
-   * dass der verfügbare Viewport auch bei wenig Inhalt vollständig genutzt wird.
-   */
-  display: block;
-  min-height: 100vh;
+    /**
 
-  padding: 40px 20px;
+Defines the component's outer layout area and ensures that
 
-  box-sizing: border-box;
+the available viewport is fully utilized even when there is little content.
+*/
+    display: block;
+    min-height: 100vh;
 
-  background-color: var(--color-background);
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+
+    background-color: var(--color-background);
 }
 
 h1 {
-  /**
-   * Richtet die Überschrift an der Breite des Formularbereichs aus,
-   * damit beide Inhalte auf der Seite eine gemeinsame visuelle Achse bilden.
-   */
-  width: 100%;
-  max-width: 500px;
+    /**
 
-  margin: 0 auto 24px;
+Aligns the heading with the width of the form area
 
-  color: var(--color-text);
+so that both contents share a common visual axis on the page.
+*/
+    width: 100%;
+    max-width: 500px;
 
-  font-size: 28px;
-  font-weight: 600;
+    margin: 0 auto 24px;
+
+    color: var(--color-text);
+
+    font-size: 28px;
+    font-weight: 600;
 }
 
 form {
-  /**
-   * Beschränkt das Formular auf dieselbe maximale Breite wie die übrigen
-   * zentral ausgerichteten Inhalte der Seite.
-   */
-  max-width: 500px;
+    /**
+
+Limits the form to the same maximum width as the other
+
+centrally aligned content on the page.
+*/
+    max-width: 500px;
 }
 
 .message {
-  /**
-   * Zentriert Statusmeldungen und schafft einen definierten Abstand
-   * zum nachfolgenden Formularbereich.
-   */
-  max-width: 500px;
+    /**
 
-  margin: 0 auto 16px;
+Centers status messages and creates a defined spacing
+
+from the following form area.
+*/
+    max-width: 500px;
+
+    margin: 0 auto 16px;
 }
 
 #workstep {
-  /**
-   * Ermöglicht der Arbeitsschritt-Auswahl, die gesamte verfügbare
-   * Breite ihres übergeordneten Formularbereichs einzunehmen.
-   */
-  width: 100%;
+    /**
+
+Allows the work step selection to occupy the full available
+
+width of its parent form area.
+*/
+    width: 100%;
 }
 
 @media (max-width: 600px) {
 
-  /**
-   * Passt Abstände und Überschrift an schmalere Bildschirme an,
-   * damit der verfügbare Platz für die eigentlichen Inhalte erhalten bleibt.
-   */
-  :host {
-    padding: 20px 12px;
-  }
+    /**
 
-  h1 {
-    font-size: 24px;
-  }
+Adjusts spacing and the heading for narrower screens
+
+so that sufficient space remains available for the actual content.
+*/
+    :host {
+        padding: 20px 12px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
 }

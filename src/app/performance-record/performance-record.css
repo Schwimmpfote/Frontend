@@ -1,63 +1,73 @@
 :host {
-  /**
-   * Definiert den äußeren Container der Komponente und sorgt dafür,
-   * dass sich der Hintergrund mindestens über die gesamte Viewport-Höhe erstreckt.
-   */
-  display: block;
-  min-height: 100vh;
+    /**
 
-  padding: 40px 20px;
+Defines the component's outer container and ensures that
 
-  box-sizing: border-box;
+the background extends at least across the entire viewport height.
+*/
+    display: block;
+    min-height: 100vh;
 
-  background-color: var(--color-background);
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+
+    background-color: var(--color-background);
 }
 
 h1 {
-  /**
-   * Sorgt für eine gemeinsame maximale Breite und horizontale Ausrichtung
-   * der Überschrift mit dem darunterliegenden Formular.
-   */
-  width: 100%;
-  max-width: 500px;
+    /**
 
-  margin: 0 auto 24px;
+Provides a shared maximum width and horizontal alignment
 
-  color: var(--color-text);
+between the heading and the form below it.
+*/
+    width: 100%;
+    max-width: 500px;
 
-  font-size: 28px;
-  font-weight: 600;
+    margin: 0 auto 24px;
+
+    color: var(--color-text);
+
+    font-size: 28px;
+    font-weight: 600;
 }
 
 form {
-  /**
-   * Begrenzt die Breite des Formulars, um eine konsistente
-   * Darstellung mit der übrigen Seitenstruktur zu gewährleisten.
-   */
-  max-width: 500px;
+    /**
+
+Limits the width of the form to ensure a consistent
+
+appearance with the rest of the page structure.
+*/
+    max-width: 500px;
 }
 
 .message {
-  /**
-   * Positioniert Meldungen innerhalb derselben Inhaltsbreite wie
-   * Überschrift und Formular und schafft Abstand zum folgenden Inhalt.
-   */
-  max-width: 500px;
+    /**
 
-  margin: 0 auto 16px;
+Positions messages within the same content width as
+
+the heading and form and creates spacing from the following content.
+*/
+    max-width: 500px;
+
+    margin: 0 auto 16px;
 }
 
 @media (max-width: 600px) {
 
-  /**
-   * Reduziert auf kleineren Displays die seitlichen Abstände
-   * und passt die Überschrift an die geringere verfügbare Breite an.
-   */
-  :host {
-    padding: 20px 12px;
-  }
+    /**
 
-  h1 {
-    font-size: 24px;
-  }
+Reduces the horizontal spacing on smaller displays
+
+and adjusts the heading to the reduced available width.
+*/
+    :host {
+        padding: 20px 12px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
 }

@@ -67,37 +67,12 @@ export class EvaluationComponent {
   private api = inject(ProductionApiService);
   private cdr = inject(ChangeDetectorRef);
 
-  /**
-   * Contains the latest successfully retrieved evaluation data.
-   * Remains null while no result is available for the current request.
-   */
   evaluation: Evaluation | null = null;
-
-  /**
-   * Tracks whether an API request is currently being processed.
-   * The value can be used by the view to display a loading state.
-   */
   loading = false;
-
-  /**
-   * Stores a user-facing error message when validation or data retrieval fails.
-   */
   errorMessage = '';
-
-  /**
-   * Indicates whether the currently displayed result originated from a custom range request.
-   */
   customRangeRequested = false;
-
-  /**
-   * Determines which time scope controls the currently displayed evaluation.
-   */
   currentMode: EvaluationMode = 'week';
-
-  /**
-   * Provides the initial calendar reference used for period selection.
-   * The value remains unchanged during the component lifetime.
-   */
+  
   private readonly today = new Date();
 
   /**

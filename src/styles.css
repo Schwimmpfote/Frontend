@@ -1,8 +1,8 @@
 :root {
     /**
-     * Zentralisiert die verwendeten Farben, damit Oberflächen,
-     * Texte, Zustände und Interaktionen konsistent gestaltet werden können.
-     */
+* Centralizes the colors used throughout the application so that
+* surfaces, text, states, and interactions can be styled consistently.
+*/
     --color-background: #f5f7fa;
     --color-surface: #ffffff;
     --color-surface-muted: #f8fafc;
@@ -32,6 +32,8 @@
 
     --color-disabled-background: #f8fafc;
     --color-disabled-button: #94a3b8;
+
+
 }
 
 html,
@@ -43,9 +45,9 @@ body {
 
 body {
     /**
-     * Verwendet die allgemeine Schrift- und Farbdefinition der Anwendung
-     * als Ausgangspunkt für alle nachfolgenden Elemente.
-     */
+* Uses the application's general font and color definitions
+* as the foundation for all subsequent elements.
+*/
     color: var(--color-text);
     background-color: var(--color-background);
     font-family: Arial, Helvetica, sans-serif;
@@ -53,9 +55,9 @@ body {
 
 form {
     /**
-     * Begrenzt die Formularbreite und erzeugt eine eigenständige,
-     * optisch vom Seitenhintergrund abgesetzte Eingabefläche.
-     */
+* Limits the form width and creates a self-contained input area
+* that is visually separated from the page background.
+*/
     width: 100%;
     max-width: 500px;
 
@@ -73,27 +75,31 @@ form {
     border-radius: 12px;
 
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+
 }
 
 label {
     /**
-     * Hebt Feldbezeichnungen gegenüber normalen Hilfstexten hervor
-     * und sorgt für einen definierten Abstand zum vorherigen Inhalt.
-     */
+* Highlights field labels compared to regular helper text
+* and provides a defined spacing from the previous content.
+*/
     margin-top: 12px;
 
     color: var(--color-text-secondary);
 
     font-size: 14px;
     font-weight: 600;
+
+
 }
 
 input,
 select {
     /**
-     * Vereinheitlicht Größe, Innenabstände und Fokusdarstellung
-     * der interaktiven Formularelemente.
-     */
+* Standardizes the size, spacing, and focus appearance
+* of interactive form elements.
+*/
     width: 100%;
     height: 46px;
 
@@ -113,6 +119,8 @@ select {
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease;
+
+
 }
 
 input:hover,
@@ -123,27 +131,31 @@ select:hover {
 input:focus,
 select:focus {
     /**
-     * Ersetzt den Standard-Fokusrahmen durch eine deutlich erkennbare
-     * visuelle Hervorhebung, ohne das Layout durch zusätzliche Ränder zu verändern.
-     */
+* Replaces the default focus outline with a clearly visible
+* visual highlight without changing the layout through additional borders.
+*/
     outline: none;
 
     border-color: var(--color-primary);
 
     box-shadow: 0 0 0 3px var(--color-primary-focus);
+
+
 }
 
 select {
     /**
-     * Reserviert zusätzlichen Platz auf der rechten Seite,
-     * damit der benutzerdefinierte Auswahlindikator nicht mit dem Text kollidiert.
-     */
+* Reserves additional space on the right side
+* so that the custom selection indicator does not overlap the text.
+*/
     padding: 0 42px 0 13px;
 
     appearance: none;
     -webkit-appearance: none;
 
     cursor: pointer;
+
+
 }
 
 select option {
@@ -153,29 +165,31 @@ select option {
 
 select:disabled {
     /**
-     * Kennzeichnet einen momentan nicht verfügbaren Auswahlbereich
-     * sowohl über Farbe als auch über das Mausverhalten.
-     */
+* Indicates a currently unavailable selection area
+* through both color and mouse behavior.
+*/
     color: var(--color-text-disabled);
     background-color: var(--color-disabled-background);
 
     cursor: wait;
+
+
 }
 
 .select-wrapper {
     /**
-     * Dient als Positionierungsrahmen für das nachfolgende Pfeilsymbol,
-     * damit dieses unabhängig vom eigentlichen Select-Feld platziert werden kann.
-     */
+* Serves as a positioning container for the following arrow icon,
+* allowing it to be positioned independently of the actual select field.
+*/
     position: relative;
     width: 100%;
 }
 
 .select-wrapper::after {
     /**
-     * Ergänzt bei deaktivierter nativer Select-Darstellung einen eigenen
-     * visuellen Hinweis auf die vorhandenen Auswahlmöglichkeiten.
-     */
+* Adds a custom visual indicator for the available selection options
+* when the native select appearance is disabled.
+*/
     content: "⌄";
 
     position: absolute;
@@ -188,13 +202,15 @@ select:disabled {
     font-size: 18px;
 
     pointer-events: none;
+
+
 }
 
 button {
     /**
-     * Definiert eine einheitliche Primärdarstellung für Aktionen
-     * und verhindert, dass Browser-Standards die Gestaltung beeinflussen.
-     */
+* Defines a consistent primary appearance for actions
+* and prevents browser defaults from affecting the design.
+*/
     padding: 11px 16px;
 
     color: #ffffff;
@@ -212,6 +228,8 @@ button {
     transition:
         background-color 0.15s ease,
         transform 0.05s ease;
+
+
 }
 
 button:hover {
@@ -220,9 +238,9 @@ button:hover {
 
 button:active {
     /**
-     * Erzeugt beim Auslösen der Aktion eine minimale Positionsänderung,
-     * wodurch die Interaktion unmittelbar visuell wahrnehmbar wird.
-     */
+* Creates a minimal position shift when the action is triggered,
+* making the interaction immediately noticeable visually.
+*/
     transform: translateY(1px);
 }
 
@@ -232,13 +250,15 @@ button:disabled {
 
     cursor: not-allowed;
     transform: none;
+
+
 }
 
 .message {
     /**
-     * Stellt sicher, dass Statusmeldungen unabhängig vom Inhalt
-     * innerhalb des vorgesehenen Formularbereichs ausgerichtet bleiben.
-     */
+* Ensures that status messages remain aligned within
+* the designated form area regardless of their content.
+*/
     width: 100%;
 
     box-sizing: border-box;
@@ -248,6 +268,8 @@ button:disabled {
     border-radius: 8px;
 
     font-size: 14px;
+
+
 }
 
 .message.success {
@@ -258,9 +280,9 @@ button:disabled {
 
 .message.error {
     /**
-     * Verwendet eine klar abgegrenzte Fehlerfarbkombination,
-     * damit problematische Zustände schnell vom normalen Formularinhalt unterscheidbar sind.
-     */
+* Uses a clearly separated error color combination
+* so that problematic states can be quickly distinguished from normal form content.
+*/
     color: var(--color-error);
     background-color: var(--color-error-background);
     border: 1px solid var(--color-error-border);
@@ -268,9 +290,9 @@ button:disabled {
 
 small {
     /**
-     * Formatiert ergänzende Informationen kompakt und mit ausreichendem
-     * Kontrast zum Hauptinhalt, ohne die eigentlichen Eingabefelder zu dominieren.
-     */
+* Formats supplementary information compactly with sufficient
+* contrast against the main content without dominating the input fields.
+*/
     display: block;
 
     margin: -2px 0 4px;
@@ -280,15 +302,19 @@ small {
     font-size: 12px;
     font-weight: 400;
     line-height: 1.4;
+
+
 }
 
 @media (max-width: 600px) {
 
     /**
-     * Reduziert auf kleinen Bildschirmen den Innenabstand des Formulars,
-     * damit die verfügbare Breite effizienter für Eingaben genutzt wird.
-     */
+ * Reduces the form's padding on small screens
+ * so that the available width can be used more efficiently for inputs.
+ */
     form {
         padding: 24px 20px;
     }
+
+
 }

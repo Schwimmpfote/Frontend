@@ -23,7 +23,10 @@ import {
 } from '../shared/utils/date.util';
 
 
-
+/**
+ * Handles the creation of production work-process records
+ * and provides the available work steps for selection.
+ */
 @Component({
   selector: 'app-workprocess',
   imports: [
@@ -39,20 +42,36 @@ export class WorkprocessComponent {
   private cdr = inject(ChangeDetectorRef);
 
 
-  /** Available work steps. */
+  /**
+   * Contains the work steps retrieved from the backend
+   * and presented as selectable production activities.
+   */
   worksteps: Workstep[] = [];
 
-  /** Indicates whether work steps are currently loading. */
+
+  /**
+   * Remains active until the initial work-step request has completed,
+   * allowing the template to distinguish loading from an empty result.
+   */
   workstepsLoading = true;
 
-  /** Success message displayed after a successful submission. */
+
+  /**
+   * Provides user feedback when a work-process entry has been stored successfully.
+   */
   successMessage = '';
 
-  /** Error message displayed after a failed operation. */
+
+  /**
+   * Contains user-facing information about loading or submission failures.
+   */
   errorMessage = '';
 
 
-  /** Form used to create a work process entry. */
+  /**
+   * Collects the values required to create a work-process record.
+   * Duration is entered as a time value and converted to minutes before submission.
+   */
   workprocessForm = this.fb.nonNullable.group({
 
     employee_id: [],
@@ -90,11 +109,21 @@ export class WorkprocessComponent {
   });
 
 
+  /**
+   * Loads the selectable work steps immediately after component initialization.
+   */
   constructor() {
     this.loadWorksteps();
   }
 
-  /** Converts a HH:mm duration to minutes. */
+
+  /**
+   * Converts the form's HH:mm representation into the minute-based value
+   * expected by the backend.
+   *
+   * @param duration Duration string in HH:mm format.
+   * @returns Total duration in minutes.
+   */
   private durationToMinutes(
     duration: string
   ): number {
@@ -111,7 +140,10 @@ export class WorkprocessComponent {
   }
 
 
-  /** Loads the available work steps. */
+  /**
+   * Retrieves the available work steps and updates the loading state.
+   * Failed requests are reported through the component's error message.
+   */
   private loadWorksteps(): void {
 
     this.api.getWorksteps().subscribe({
@@ -143,7 +175,11 @@ export class WorkprocessComponent {
   }
 
 
-  /** Creates a work process entry from the form data. */
+  /**
+   * Validates the form, converts the entered duration and submits
+   * the resulting work-process record to the backend.
+   * Invalid form values stop the request and expose validation feedback.
+   */
   submit(): void {
 
     this.successMessage = '';

@@ -1,35 +1,60 @@
 :host {
+  /**
+   * Definiert den äußeren Container der Komponente und sorgt dafür,
+   * dass sich der Hintergrund mindestens über die gesamte Viewport-Höhe erstreckt.
+   */
   display: block;
   min-height: 100vh;
-  padding: 40px 20px;
-  box-sizing: border-box;
-}
 
-form {
-  max-width: 500px;
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  background-color: var(--color-background);
 }
 
 h1 {
+  /**
+   * Sorgt für eine gemeinsame maximale Breite und horizontale Ausrichtung
+   * der Überschrift mit dem darunterliegenden Formular.
+   */
+  width: 100%;
   max-width: 500px;
+
   margin: 0 auto 24px;
+
+  color: var(--color-text);
+
+  font-size: 28px;
+  font-weight: 600;
 }
 
-label {
-  margin-top: 12px;
+form {
+  /**
+   * Begrenzt die Breite des Formulars, um eine konsistente
+   * Darstellung mit der übrigen Seitenstruktur zu gewährleisten.
+   */
+  max-width: 500px;
 }
 
 .message {
+  /**
+   * Positioniert Meldungen innerhalb derselben Inhaltsbreite wie
+   * Überschrift und Formular und schafft Abstand zum folgenden Inhalt.
+   */
   max-width: 500px;
+
   margin: 0 auto 16px;
 }
 
 @media (max-width: 600px) {
+
+  /**
+   * Reduziert auf kleineren Displays die seitlichen Abstände
+   * und passt die Überschrift an die geringere verfügbare Breite an.
+   */
   :host {
     padding: 20px 12px;
-  }
-
-  form {
-    padding: 24px 20px;
   }
 
   h1 {

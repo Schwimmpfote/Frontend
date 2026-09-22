@@ -37,21 +37,35 @@ export class PerformanceRecordComponent {
   private api = inject(PerformanceApiService);
 
 
-  /** Success message displayed after a successful submission. */
+  /**
+   * Provides feedback after the record has been persisted successfully.
+   * An empty value indicates that no success notification is currently shown.
+   */
   successMessage = '';
 
-  /** Error message displayed after a failed operation. */
+
+  /**
+   * Contains the user-facing message for validation or API failures.
+   * It is cleared whenever a new submission is started.
+   */
   errorMessage = '';
 
 
-  /** Categories available for performance records. */
+  /**
+   * Defines the business categories that can be assigned to a performance record.
+   * These values correspond directly to the categories accepted by the API model.
+   */
   categories: PerformanceCategory[] = [
     'Sale',
     'Production'
   ];
 
 
-  /** Form used to create a performance record. */
+  /**
+   * Captures all values required to create a performance record.
+   * The selected day defaults to the current date so that new records
+   * can be entered without manually specifying today's date.
+   */
   performanceRecordForm = this.fb.nonNullable.group({
 
     category: [
@@ -78,7 +92,12 @@ export class PerformanceRecordComponent {
 
   });
 
-  /** Creates a performance record from the form data. */
+
+  /**
+   * Validates the form and sends the resulting record to the performance API.
+   * Invalid input prevents submission and marks all controls as touched
+   * so that validation feedback can be displayed by the template.
+   */
   submit(): void {
 
     this.successMessage = '';

@@ -40,9 +40,9 @@ import {
 } from '../shared/utils/date.util';
 
 
-
 /**
- * Available evaluation periods.
+ * Defines the supported time scopes for which production data can be evaluated.
+ * The custom mode uses an independently selected start and end date.
  */
 type EvaluationMode =
   | 'day'
@@ -67,30 +67,44 @@ export class EvaluationComponent {
   private api = inject(ProductionApiService);
   private cdr = inject(ChangeDetectorRef);
 
-
-  /** Current evaluation result. */
+  /**
+   * Contains the latest successfully retrieved evaluation data.
+   * Remains null while no result is available for the current request.
+   */
   evaluation: Evaluation | null = null;
 
-  /** Indicates whether an evaluation request is active. */
+  /**
+   * Tracks whether an API request is currently being processed.
+   * The value can be used by the view to display a loading state.
+   */
   loading = false;
 
-  /** Current error message. */
+  /**
+   * Stores a user-facing error message when validation or data retrieval fails.
+   */
   errorMessage = '';
 
-  /** Indicates whether a custom range has been requested. */
+  /**
+   * Indicates whether the currently displayed result originated from a custom range request.
+   */
   customRangeRequested = false;
 
-  /** Currently selected evaluation mode. */
+  /**
+   * Determines which time scope controls the currently displayed evaluation.
+   */
   currentMode: EvaluationMode = 'week';
 
-  /** Date used as reference for day, week and year evaluations. */
+  /**
+   * Provides the initial calendar reference used for period selection.
+   * The value remains unchanged during the component lifetime.
+   */
   private readonly today = new Date();
 
-
   /**
-   * Evaluation filter form.
+   * Contains the date and period controls used to build evaluation requests.
    *
-   * selectedMonth uses the JavaScript month index (0-11).
+   * The month control follows JavaScript's zero-based month representation,
+   * where January is 0 and December is 11.
    */
   customForm = this.fb.nonNullable.group({
 
@@ -121,19 +135,24 @@ export class EvaluationComponent {
 
   });
 
-
-  /** Years available for month selection. */
+  /**
+   * Provides the range of years that can currently be selected in the month view.
+   */
   availableYears: number[] = [];
 
-
-  /** Aggregated values for the currently displayed period. */
+  /**
+   * Holds the aggregated production and sales values for the active period.
+   * The difference represents production minus sales.
+   */
   selectedPeriod: EvaluationPeriod = {
     production: 0,
     sale: 0,
     difference: 0
   };
 
-
+  /**
+   * Initializes the selectable year range and loads the default weekly evaluation.
+   */
   constructor() {
 
     const currentYear =
@@ -149,27 +168,31 @@ export class EvaluationComponent {
     this.loadWeek();
   }
 
-
-  /** Returns the currently selected month. */
+  /**
+   * Exposes the selected month so it can be consumed without accessing the form structure directly.
+   */
   get selectedMonth(): number {
 
     return this.customForm.controls.selectedMonth.value;
 
   }
 
-
-  /** Returns the currently selected month year. */
+  /**
+   * Exposes the year associated with the currently selected month.
+   */
   get selectedMonthYear(): number {
 
     return this.customForm.controls.selectedMonthYear.value;
 
   }
 
-
   /**
-   * Changes the active evaluation mode.
+   * Activates an evaluation mode and loads the corresponding data.
    *
-   * @param mode Evaluation mode to activate.
+   * Switching to custom mode clears the current result because
+   * the custom range must be explicitly submitted before new data is requested.
+   *
+   * @param mode Evaluation mode selected by the user.
    */
   selectMode(
     mode: EvaluationMode
@@ -215,8 +238,10 @@ export class EvaluationComponent {
     }
   }
 
-
-  /** Reloads the evaluation after the selected date changes. */
+  /**
+   * Refreshes the active evaluation after a date-based form value changes.
+   * The request boundaries are recalculated according to the selected mode.
+   */
   onDateChange(): void {
 
     this.errorMessage = '';
@@ -242,24 +267,28 @@ export class EvaluationComponent {
     }
   }
 
-
-  /** Reloads the evaluation after the selected month changes. */
+  /**
+   * Requests fresh data after the selected month has changed.
+   */
   onMonthChange(): void {
 
     this.errorMessage = '';
     this.loadMonth();
   }
 
-
-  /** Reloads the evaluation after the selected month year changes. */
+  /**
+   * Requests fresh data after the year associated with the selected month has changed.
+   */
   onMonthYearChange(): void {
 
     this.errorMessage = '';
     this.loadMonth();
   }
 
-
-  /** Synchronizes the month controls with the selected date. */
+  /**
+   * Keeps the month and year selectors synchronized with the selected calendar date.
+   * Invalid date values are ignored to prevent invalid API requests.
+   */
   private syncMonthFromDate(): void {
 
     const value =
@@ -285,8 +314,9 @@ export class EvaluationComponent {
     );
   }
 
-
-  /** Loads the evaluation for the selected day. */
+  /**
+   * Builds a one-day request using the currently selected date as both boundaries.
+   */
   private loadDay(): void {
 
     const selectedDate =
@@ -298,8 +328,10 @@ export class EvaluationComponent {
     );
   }
 
-
-  /** Loads the evaluation for the week containing the selected date. */
+  /**
+   * Determines the Monday-to-Sunday interval containing the selected date.
+   * Sunday is treated as the final day of the preceding Monday-based week.
+   */
   private loadWeek(): void {
 
     const selectedDate =
@@ -336,8 +368,10 @@ export class EvaluationComponent {
     );
   }
 
-
-  /** Loads the evaluation for the selected month. */
+  /**
+   * Creates the first and last calendar day of the selected month
+   * and uses them as the evaluation boundaries.
+   */
   private loadMonth(): void {
 
     const month =
@@ -358,8 +392,9 @@ export class EvaluationComponent {
     );
   }
 
-
-  /** Loads the evaluation for the year of the selected date. */
+  /**
+   * Creates a complete calendar-year interval based on the selected date.
+   */
   private loadYear(): void {
 
     const selectedDate =
@@ -383,11 +418,9 @@ export class EvaluationComponent {
     );
   }
 
-
   /**
-   * Loads the evaluation for a custom date range.
-   *
-   * @returns void
+   * Validates and submits the manually selected date interval.
+   * Invalid form values or reversed boundaries prevent an API request.
    */
   loadCustomRange(): void {
 
@@ -420,12 +453,12 @@ export class EvaluationComponent {
     );
   }
 
-
   /**
-   * Requests an evaluation from the API.
+   * Retrieves evaluation data for the specified date boundaries and updates the view state.
+   * Days without production or sales are removed before aggregate values are calculated.
    *
-   * @param from Start date in YYYY-MM-DD format.
-   * @param to End date in YYYY-MM-DD format.
+   * @param from Inclusive start date in YYYY-MM-DD format.
+   * @param to Inclusive end date in YYYY-MM-DD format.
    */
   private requestEvaluation(
     from: string,
@@ -487,8 +520,13 @@ export class EvaluationComponent {
       });
   }
 
-
-  /** Calculates aggregated production, sales and difference values. */
+  /**
+   * Aggregates production and sales across all supplied daily evaluation entries.
+   * The resulting difference is calculated from the two aggregated values.
+   *
+   * @param days Daily evaluation entries belonging to the active period.
+   * @returns Aggregated production, sales and production-minus-sales values.
+   */
   private calculatePeriod(
     days: EvaluationDay[]
   ): EvaluationPeriod {
@@ -514,7 +552,9 @@ export class EvaluationComponent {
     };
   }
 
-  /** Returns the display title for the active evaluation mode. */
+  /**
+   * Returns the localized title associated with the currently active evaluation mode.
+   */
   get modeTitle(): string {
 
     switch (this.currentMode) {

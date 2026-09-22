@@ -1,45 +1,67 @@
-<h1>Performance erfassen</h1>
+<h1>
+  Performance erfassen
+</h1>
 
+
+<!-- Displays feedback from the previous save operation before the form is used again. -->
 @if (successMessage) {
 
 <div class="message success">
   {{ successMessage }}
 </div>
+
 }
 
+
+<!-- Keeps API or processing errors visible without interrupting the form. -->
 @if (errorMessage) {
+
 <div class="message error">
   {{ errorMessage }}
 </div>
+
 }
 
+
 <form [formGroup]="performanceRecordForm" (ngSubmit)="submit()">
+
   <label for="category">
     Kategorie
   </label>
+
   <small>
     Wählen Sie aus, ob es sich um einen Verkauf oder eine Produktion handelt.
   </small>
+
   <div class="select-wrapper">
+
     <select id="category" formControlName="category">
+
       <option value="" disabled>
         Kategorie auswählen
       </option>
+
       @for (
       category of categories;
       track category
       ) {
+
       <option [value]="category">
+
         @if (category === 'Sale') {
         Verkauf
         } @else {
         Produktion
         }
+
       </option>
+
       }
+
     </select>
 
   </div>
+
 
   <label for="amount">
     Anzahl
@@ -51,16 +73,21 @@
 
   <input id="amount" type="number" min="0" step="1" formControlName="amount" placeholder="z. B. 100" />
 
+
   <label for="day">
     Tag
   </label>
+
   <small>
     Geben Sie den Tag an, für den dies erfasst wird. Das Format ist TT.MM.YYYY.
   </small>
 
   <input id="day" type="date" formControlName="day" />
 
+
+  <!-- Submits the validated form and delegates persistence to the component. -->
   <button type="submit">
     Performance speichern
   </button>
+
 </form>

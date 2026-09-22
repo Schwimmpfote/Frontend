@@ -1,469 +1,555 @@
 :host {
-display: block;
-min-height: 100vh;
+    /**
+     * Stellt den grundlegenden Seitenbereich bereit und sorgt dafür,
+     * dass der Inhalt mindestens die gesamte verfügbare Bildschirmhöhe einnimmt.
+     */
+    display: block;
+    min-height: 100vh;
 
-padding: 40px 20px;
-box-sizing: border-box;
+    padding: 40px 20px;
+    box-sizing: border-box;
 
-color: var(--color-text);
-background-color: var(--color-background);
+    color: var(--color-text);
 }
-
-/* ========================================
-Seitenüberschrift
-======================================== */
-
-h1 {
-width: 100%;
-max-width: 1100px;
-
-margin: 0 auto 24px;
-
-color: var(--color-text);
-
-font-size: 28px;
-font-weight: 600;
-}
-
-/* ========================================
-Zeitraum-Navigation
-======================================== */
 
 .period-navigation {
-width: 100%;
-max-width: 1100px;
+    /**
+     * Ordnet die verfügbaren Zeitraumoptionen gleichmäßig in einer
+     * horizontalen Navigationsleiste an und begrenzt deren maximale Breite.
+     */
+    width: 100%;
+    max-width: 1100px;
 
-margin: 0 auto 20px;
-padding: 6px;
+    margin: 0 auto 20px;
+    padding: 6px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-display: grid;
-grid-template-columns: repeat(5, 1fr);
-gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
 
-background-color: var(--color-border-light);
-border-radius: 10px;
+    background-color: var(--color-border-light);
+    border-radius: 10px;
 }
 
 .period-navigation button {
-width: 100%;
+    /**
+     * Vereinheitlicht die Darstellung der einzelnen Zeitraumoptionen
+     * und ermöglicht eine flächige Ausrichtung innerhalb des Navigationsrasters.
+     */
+    width: 100%;
 
-margin: 0;
-padding: 11px 16px;
+    margin: 0;
+    padding: 11px 16px;
 
-color: var(--color-text-muted);
-background-color: transparent;
+    color: var(--color-text-muted);
+    background-color: transparent;
 
-border: none;
-border-radius: 7px;
+    border: none;
+    border-radius: 7px;
 
-font-family: inherit;
-font-size: 15px;
-font-weight: 600;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
 
-cursor: pointer;
+    cursor: pointer;
 
-transition:
-background-color 0.15s ease,
-color 0.15s ease;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
 }
 
 .period-navigation button:hover {
-color: var(--color-text);
-background-color: var(--color-surface);
+    /**
+     * Hebt eine Zeitraumoption beim Überfahren hervor,
+     * ohne den aktiven Zustand vorwegzunehmen.
+     */
+    color: var(--color-text);
+    background-color: var(--color-surface);
 }
 
 .period-navigation button.active {
-color: #ffffff;
-background-color: var(--color-primary);
+    /**
+     * Kennzeichnet die aktuell ausgewählte Zeitraumoption
+     * durch die primäre Akzentfarbe und einen kontrastreichen Text.
+     */
+    color: #ffffff;
+    background-color: var(--color-primary);
 }
 
-/* ========================================
-Zeitraum-Auswahl
-======================================== */
-
 .period-selector {
-width: 100%;
-max-width: 1100px;
+    /**
+     * Bildet einen eigenständigen Bereich für zusätzliche Zeitraumangaben
+     * und richtet dessen Inhalte horizontal innerhalb der verfügbaren Breite aus.
+     */
+    width: 100%;
+    max-width: 1100px;
 
-margin: 0 auto 24px;
-padding: 16px 20px;
+    margin: 0 auto 24px;
+    padding: 16px 20px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-display: flex;
-align-items: center;
-gap: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 
-background-color: var(--color-surface);
-border: 1px solid var(--color-border-light);
-border-radius: 10px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
 
-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .period-selector label {
-flex-shrink: 0;
+    /**
+     * Verhindert, dass die Beschriftung bei der flexiblen Anordnung
+     * unnötig verkleinert wird.
+     */
+    flex-shrink: 0;
 }
 
 .period-selector input {
-width: auto;
-min-width: 180px;
-height: 42px;
+    /**
+     * Ermöglicht eine kompakte Eingabedarstellung mit einer Mindestbreite,
+     * während das Feld seine Breite nicht automatisch auf den gesamten Container ausdehnt.
+     */
+    width: auto;
+    min-width: 180px;
+    height: 42px;
 
-padding: 0 12px;
+    padding: 0 12px;
 }
 
-/* ========================================
-Monatsauswahl
-======================================== */
-
 .month-selector {
-display: flex;
-align-items: center;
-justify-content: flex-start;
+    /**
+     * Richtet die Elemente der Monatsauswahl am Anfang der verfügbaren
+     * horizontalen Ausrichtung aus.
+     */
+    justify-content: flex-start;
 }
 
 .month-fields {
-width: 100%;
-max-width: 360px;
+    /**
+     * Gruppiert die Monats- und Jahresfelder in einem begrenzten Raster,
+     * dessen Spalten unterschiedliche Mindestbreiten erhalten.
+     */
+    width: 100%;
+    max-width: 360px;
 
-display: grid;
-grid-template-columns: minmax(180px, 1fr) minmax(120px, 160px);
-gap: 10px;
+    display: grid;
+    grid-template-columns:
+        minmax(180px, 1fr) minmax(120px, 160px);
+
+    gap: 10px;
 }
 
 .month-fields select {
-height: 42px;
-padding: 0 12px;
+    /**
+     * Passt die Auswahlfelder an die kompaktere Darstellung der Monatsauswahl an.
+     */
+    height: 42px;
 
-font-size: 14px;
+    padding: 0 42px 0 12px;
+
+    font-size: 14px;
 }
-
-/* ========================================
-Zusätzliche Beschreibung
-======================================== */
 
 .period-selector span {
-color: var(--color-text-light);
-font-size: 13px;
+    /**
+     * Stellt ergänzende Informationen innerhalb der Zeitraumsteuerung
+     * optisch zurückhaltend dar.
+     */
+    color: var(--color-text-light);
+    font-size: 13px;
 }
-
-/* ========================================
-Benutzerdefinierter Zeitraum
-======================================== */
 
 .custom-range {
-width: 100%;
-max-width: 1100px;
+    /**
+     * Ordnet die Eingaben für einen frei definierbaren Zeitraum zusammen
+     * mit der zugehörigen Aktion in einem responsiven Raster an.
+     */
+    width: 100%;
+    max-width: 1100px;
 
-margin: 0 auto 24px;
-padding: 24px;
+    margin: 0 auto 24px;
+    padding: 24px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-display: grid;
-grid-template-columns: 1fr 1fr auto;
-align-items: end;
-gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+    gap: 16px;
 
-background-color: var(--color-surface);
-border: 1px solid var(--color-border-light);
-border-radius: 12px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
 
-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-.custom-range > div {
-display: flex;
-flex-direction: column;
-gap: 6px;
+.custom-range>div {
+    /**
+     * Stapelt die zu einem Eingabefeld gehörende Beschriftung und Eingabe
+     * vertikal und hält deren Abstand unabhängig vom Inhalt konstant.
+     */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .custom-range button {
-width: auto;
-min-width: 180px;
+    /**
+     * Gibt der Aktion innerhalb des Rasters eine definierte Mindestbreite,
+     * ohne sie unnötig auf die gesamte verfügbare Fläche auszudehnen.
+     */
+    width: auto;
+    min-width: 180px;
 
-margin-top: 0;
+    margin-top: 0;
 }
-
-/* ========================================
-Ladezustand
-======================================== */
 
 .loading {
-width: 100%;
-max-width: 1100px;
+    /**
+     * Reserviert einen eigenständigen Bereich für den Ladezustand
+     * und positioniert dessen Hinweis mittig innerhalb des Inhaltsbereichs.
+     */
+    width: 100%;
+    max-width: 1100px;
 
-margin: 0 auto 24px;
-padding: 20px;
+    margin: 0 auto 24px;
+    padding: 20px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-color: var(--color-text-light);
+    color: var(--color-text-light);
 
-text-align: center;
+    text-align: center;
 
-background-color: var(--color-surface);
-border: 1px solid var(--color-border-light);
-border-radius: 10px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
 }
 
-/* ========================================
-Inhaltsbereiche
-======================================== */
-
 section {
-width: 100%;
-max-width: 1100px;
+    /**
+     * Definiert die gemeinsame visuelle Oberfläche der Inhaltsbereiche
+     * und sorgt für eine einheitliche maximale Breite innerhalb der Seite.
+     */
+    width: 100%;
+    max-width: 1100px;
 
-margin: 0 auto 24px;
-padding: 24px;
+    margin: 0 auto 24px;
+    padding: 24px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-background-color: var(--color-surface);
-border: 1px solid var(--color-border-light);
-border-radius: 12px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
 
-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 section h2 {
-margin: 0 0 20px;
+    /**
+     * Trennt die Abschnittsüberschrift optisch vom darunterliegenden Inhalt
+     * und definiert eine einheitliche Hierarchie innerhalb der Inhaltsbereiche.
+     */
+    margin: 0 0 20px;
 
-color: var(--color-text);
+    color: var(--color-text);
 
-font-size: 20px;
-font-weight: 600;
+    font-size: 20px;
+    font-weight: 600;
 }
 
-/* ========================================
-Kennzahlen
-======================================== */
-
 .cards {
-display: grid;
-grid-template-columns: repeat(3, minmax(0, 1fr));
-gap: 16px;
+    /**
+     * Verteilt die Kennzahlenkarten gleichmäßig auf drei Spalten
+     * und verhindert durch die Mindestbreite ein unerwünschtes Überlaufen.
+     */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
 }
 
 .card {
-min-height: 110px;
+    /**
+     * Zentriert den Inhalt der Kennzahlenkarte vertikal und stellt
+     * für alle Karten eine einheitliche Mindesthöhe bereit.
+     */
+    min-height: 110px;
 
-padding: 20px;
+    padding: 20px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-display: flex;
-flex-direction: column;
-justify-content: center;
-gap: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
 
-background-color: var(--color-surface-muted);
-border: 1px solid var(--color-border-light);
-border-radius: 10px;
+    background-color: var(--color-surface-muted);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
 }
 
 .card span {
-color: var(--color-text-light);
+    /**
+     * Stellt die Bezeichnung einer Kennzahl gegenüber ihrem eigentlichen
+     * Zahlenwert visuell in den Hintergrund.
+     */
+    color: var(--color-text-light);
 
-font-size: 14px;
-font-weight: 500;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .card strong {
-color: var(--color-text);
+    /**
+     * Hebt den eigentlichen Kennzahlenwert durch eine größere und stärkere
+     * Schrift deutlich gegenüber der zugehörigen Bezeichnung hervor.
+     */
+    color: var(--color-text);
 
-font-size: 28px;
-font-weight: 700;
+    font-size: 28px;
+    font-weight: 700;
 }
 
 .card.production {
-border-left: 4px solid var(--color-primary);
+    /**
+     * Kennzeichnet Produktionswerte mit einem eigenen Farbakzent,
+     * ohne die grundlegende Kartenstruktur zu verändern.
+     */
+    border-left: 4px solid var(--color-primary);
 }
 
 .card.sale {
-border-left: 4px solid #16a34a;
+    /**
+     * Verwendet einen grünen Seitenakzent zur visuellen Unterscheidung
+     * von Verkaufskennzahlen.
+     */
+    border-left: 4px solid #16a34a;
 }
 
 .card.difference {
-border-left: 4px solid #f59e0b;
+    /**
+     * Hebt Differenzwerte mit einem separaten Farbakzent hervor,
+     * damit sie unmittelbar von Produktions- und Verkaufswerten unterscheidbar sind.
+     */
+    border-left: 4px solid #f59e0b;
 }
 
-/* ========================================
-Tabellen
-======================================== */
-
 .table-wrapper {
-width: 100%;
+    /**
+     * Erlaubt bei Tabellen mit vielen Spalten horizontales Scrollen,
+     * ohne den übergeordneten Inhaltsbereich zu verbreitern.
+     */
+    width: 100%;
 
-overflow-x: auto;
+    overflow-x: auto;
 
-border: 1px solid var(--color-border-light);
-border-radius: 8px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
 }
 
 table {
-width: 100%;
-min-width: 650px;
+    /**
+     * Sorgt für eine vollständige Ausnutzung des verfügbaren Bereichs
+     * und verhindert bei kleinen Tabellenbreiten eine zu starke Verdichtung.
+     */
+    width: 100%;
+    min-width: 650px;
 
-border-collapse: collapse;
+    border-collapse: collapse;
 }
 
 thead {
-background-color: var(--color-surface-muted);
+    /**
+     * Setzt den Tabellenkopf durch einen dezenten Hintergrund vom
+     * eigentlichen Tabelleninhalt ab.
+     */
+    background-color: var(--color-surface-muted);
 }
 
 th {
-padding: 13px 14px;
+    /**
+     * Formatiert Spaltenüberschriften kompakt und verhindert,
+     * dass längere Bezeichnungen innerhalb einer Spalte umbrechen.
+     */
+    padding: 13px 14px;
 
-color: var(--color-text-muted);
+    color: var(--color-text-muted);
 
-font-size: 13px;
-font-weight: 600;
+    font-size: 13px;
+    font-weight: 600;
 
-text-align: left;
-white-space: nowrap;
+    text-align: left;
+    white-space: nowrap;
 
-border-bottom: 1px solid var(--color-border-light);
+    border-bottom: 1px solid var(--color-border-light);
 }
 
 td {
-padding: 13px 14px;
+    /**
+     * Definiert die Abstände und die visuelle Trennung der einzelnen
+     * Datenzellen innerhalb des Tabellenkörpers.
+     */
+    padding: 13px 14px;
 
-color: var(--color-text-secondary);
+    color: var(--color-text-secondary);
 
-font-size: 14px;
+    font-size: 14px;
 
-border-bottom: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
 }
 
 tbody tr:last-child td {
-border-bottom: none;
+    /**
+     * Entfernt die untere Trennlinie der letzten Datenzeile,
+     * damit sie nicht zusätzlich zum Rahmen des Tabellencontainers erscheint.
+     */
+    border-bottom: none;
 }
 
 tbody tr:hover {
-background-color: var(--color-surface-muted);
+    /**
+     * Hebt die aktuell überfahrene Datenzeile dezent hervor,
+     * um die Orientierung innerhalb größerer Tabellen zu erleichtern.
+     */
+    background-color: var(--color-surface-muted);
 }
 
 th:nth-child(n + 2),
 td:nth-child(n + 2) {
-text-align: right;
+    /**
+     * Richtet alle Spalten ab der zweiten Spalte rechtsbündig aus,
+     * was insbesondere die Vergleichbarkeit numerischer Werte verbessert.
+     */
+    text-align: right;
 }
 
 tbody:empty::after {
-content: "Keine Daten vorhanden.";
+    /**
+     * Zeigt einen verständlichen Hinweis an, wenn der Tabellenkörper
+     * keine Datenzeilen enthält.
+     */
+    content: "Keine Daten vorhanden.";
 
-display: table-row;
+    display: table-row;
 
-color: var(--color-text-light);
+    color: var(--color-text-light);
 }
-
-/* ========================================
-Informationshinweis
-======================================== */
 
 .info-message {
-width: 100%;
-max-width: 1100px;
+    /**
+     * Formatiert ergänzende Hinweise als eigenständigen Inhaltsbereich
+     * und hält dessen Breite an die übrigen Seitenelemente angepasst.
+     */
+    width: 100%;
+    max-width: 1100px;
 
-margin: 0 auto 24px;
-padding: 14px 16px;
+    margin: 0 auto 24px;
+    padding: 14px 16px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-color: var(--color-text-muted);
-background-color: var(--color-surface-muted);
+    color: var(--color-text-muted);
+    background-color: var(--color-surface-muted);
 
-border: 1px solid var(--color-border-light);
-border-radius: 8px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
 
-font-size: 14px;
+    font-size: 14px;
 }
-
-/* ========================================
-Responsive Darstellung
-======================================== */
 
 @media (max-width: 800px) {
-:host {
-padding: 24px 12px;
-}
 
-h1 {
-font-size: 24px;
-}
+    /**
+     * Reduziert auf mittelgroßen Bildschirmen die Außenabstände und
+     * wechselt die Kennzahlenkarten in eine einspaltige Darstellung.
+     */
+    :host {
+        padding: 24px 12px;
+    }
 
-section {
-padding: 20px;
-}
+    section {
+        padding: 20px;
+    }
 
-.cards {
-grid-template-columns: 1fr;
-}
+    .cards {
+        grid-template-columns: 1fr;
+    }
 
-.card {
-min-height: 90px;
-}
+    .card {
+        min-height: 90px;
+    }
 }
 
 @media (max-width: 700px) {
-.period-navigation {
-grid-template-columns: repeat(2, 1fr);
-}
 
-.period-navigation button:last-child {
-grid-column: span 2;
-}
+    /**
+     * Passt Navigation, benutzerdefinierte Zeiträume und Auswahlfelder
+     * an schmalere Bildschirmbreiten an, indem horizontale Bereiche gestapelt werden.
+     */
+    .period-navigation {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-.custom-range {
-grid-template-columns: 1fr;
-}
+    .period-navigation button:last-child {
+        grid-column: span 2;
+    }
 
-.custom-range button {
-width: 100%;
-}
+    .custom-range {
+        grid-template-columns: 1fr;
+    }
 
-.period-selector {
-align-items: stretch;
-flex-direction: column;
-gap: 8px;
-}
+    .custom-range button {
+        width: 100%;
+    }
 
-.period-selector input {
-width: 100%;
-}
+    .period-selector {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+    }
 
-.month-selector {
-align-items: stretch;
-}
+    .period-selector input {
+        width: 100%;
+    }
 
-.month-fields {
-max-width: none;
-grid-template-columns: 1fr;
-}
+    .month-fields {
+        max-width: none;
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
-:host {
-padding: 20px 12px;
-}
 
-section {
-padding: 16px;
-}
+    /**
+     * Verdichtet die Abstände und Schriftgrößen für sehr kleine Displays,
+     * damit die wesentlichen Inhalte weiterhin komfortabel nutzbar bleiben.
+     */
+    :host {
+        padding: 20px 12px;
+    }
 
-section h2 {
-font-size: 18px;
-}
+    section {
+        padding: 16px;
+    }
 
-.card strong {
-font-size: 24px;
-}
+    section h2 {
+        font-size: 18px;
+    }
 
-table {
-min-width: 600px;
-}
+    .card strong {
+        font-size: 24px;
+    }
+
+    table {
+        min-width: 600px;
+    }
 }

@@ -1,9 +1,12 @@
+/* Provides the application shell with a full-height background surface. */
 :host {
   display: block;
   min-height: 100vh;
   background-color: #f5f7fa;
 }
 
+
+/* Keeps the primary navigation aligned horizontally and visually separated from the page content. */
 .main-navigation {
   display: flex;
   align-items: center;
@@ -15,6 +18,8 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
+
+/* Defines the default appearance and interactive behavior of navigation links. */
 .main-navigation a {
   padding: 9px 14px;
 
@@ -30,11 +35,15 @@
     color 0.15s ease;
 }
 
+
+/* Provides visual feedback when the pointer is positioned over a navigation link. */
 .main-navigation a:hover {
   color: #1d4ed8;
   background-color: #eff6ff;
 }
 
+
+/* Allows the main content area to use the complete available horizontal space. */
 main {
   width: 100%;
 }

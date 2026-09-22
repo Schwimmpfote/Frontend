@@ -1,39 +1,68 @@
 :host {
+  /**
+   * Definiert den äußeren Layoutbereich der Komponente und stellt sicher,
+   * dass der verfügbare Viewport auch bei wenig Inhalt vollständig genutzt wird.
+   */
   display: block;
   min-height: 100vh;
-  padding: 40px 20px;
-  box-sizing: border-box;
-}
 
-form {
-  max-width: 500px;
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  background-color: var(--color-background);
 }
 
 h1 {
+  /**
+   * Richtet die Überschrift an der Breite des Formularbereichs aus,
+   * damit beide Inhalte auf der Seite eine gemeinsame visuelle Achse bilden.
+   */
+  width: 100%;
   max-width: 500px;
+
   margin: 0 auto 24px;
+
+  color: var(--color-text);
+
+  font-size: 28px;
+  font-weight: 600;
 }
 
-label {
-  margin-top: 12px;
+form {
+  /**
+   * Beschränkt das Formular auf dieselbe maximale Breite wie die übrigen
+   * zentral ausgerichteten Inhalte der Seite.
+   */
+  max-width: 500px;
 }
 
 .message {
+  /**
+   * Zentriert Statusmeldungen und schafft einen definierten Abstand
+   * zum nachfolgenden Formularbereich.
+   */
   max-width: 500px;
+
   margin: 0 auto 16px;
 }
 
 #workstep {
-  /* falls diese ID wirklich benötigt wird */
+  /**
+   * Ermöglicht der Arbeitsschritt-Auswahl, die gesamte verfügbare
+   * Breite ihres übergeordneten Formularbereichs einzunehmen.
+   */
+  width: 100%;
 }
 
 @media (max-width: 600px) {
+
+  /**
+   * Passt Abstände und Überschrift an schmalere Bildschirme an,
+   * damit der verfügbare Platz für die eigentlichen Inhalte erhalten bleibt.
+   */
   :host {
     padding: 20px 12px;
-  }
-
-  form {
-    padding: 24px 20px;
   }
 
   h1 {

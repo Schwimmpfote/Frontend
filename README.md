@@ -110,7 +110,7 @@ Die Anwendung besitzt drei Hauptrouten.
 | `/performance_record` | Performance-Daten erfassen |
 | `/evaluation` | Produktionsdaten auswerten |
 
-Beim Aufruf der Root-Route `/` wird automatisch auf `/workprocess` weitergeleitet.
+Beim Aufruf der Root-Route `/` wird automatisch auf `/evaluation` weitergeleitet.
 
 Die Routing-Konfiguration verwendet Lazy Loading:
 

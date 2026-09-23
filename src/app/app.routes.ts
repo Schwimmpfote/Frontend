@@ -7,7 +7,7 @@ export const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'workprocess',
+    redirectTo: 'evaluation',
     pathMatch: 'full'
   },
 

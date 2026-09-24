@@ -1,137 +1,78 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  inject
-} from '@angular/core';
+// workprocess.component.ts
+
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import {
   FormBuilder,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 
-import {
-  ProductionApiService
-} from '../services/production-api.service';
+import { ProductionApiService } from '../services/production-api.service';
 
-import {
-  Workstep
-} from '../models/workprocess';
+import { Workstep } from '../models/workprocess';
 
-import {
-  getToday
-} from '../shared/utils/date.util';
+import { getToday } from '../shared/utils/date.util';
 
-
-/**
- * Handles the creation of production work-process records
- * and provides the available work steps for selection.
- */
 @Component({
   selector: 'app-workprocess',
-  imports: [
-    ReactiveFormsModule
-  ],
+  imports: [ReactiveFormsModule],
   templateUrl: './workprocess.html',
-  styleUrl: './workprocess.css'
+  styleUrl: './workprocess.css',
 })
 export class WorkprocessComponent {
-
   private fb = inject(FormBuilder);
   private api = inject(ProductionApiService);
   private cdr = inject(ChangeDetectorRef);
 
-
-  /**
-   * Contains the work steps retrieved from the backend
-   * and presented as selectable production activities.
-   */
   worksteps: Workstep[] = [];
 
-
-  /**
-   * Remains active until the initial work-step request has completed,
-   * allowing the template to distinguish loading from an empty result.
-   */
   workstepsLoading = true;
 
-
-  /**
-   * Provides user feedback when a work-process entry has been stored successfully.
-   */
   successMessage = '';
 
-
-  /**
-   * Contains user-facing information about loading or submission failures.
-   */
   errorMessage = '';
 
-
-  /**
-   * Collects the values required to create a work-process record.
-   * Duration is entered as a time value and converted to minutes before submission.
-   */
   workprocessForm = this.fb.nonNullable.group({
-
     employee_id: [],
 
     workstep_id: [
       0,
       [
         Validators.required,
-        Validators.min(1)
-      ]
+        Validators.min(1),
+      ],
     ],
 
     duration: [
       '',
-      Validators.required
+      Validators.required,
     ],
 
     amount: [
       0,
       [
         Validators.required,
-        Validators.min(0)
-      ]
+        Validators.min(0),
+      ],
     ],
 
     day: [
       getToday(),
-      Validators.required
+      Validators.required,
     ],
 
-    ignore: [
-      false
-    ]
-
+    ignore: [false],
   });
 
-
-  /**
-   * Loads the selectable work steps immediately after component initialization.
-   */
   constructor() {
     this.loadWorksteps();
   }
 
-
-  /**
-   * Converts the form's HH:mm representation into the minute-based value
-   * expected by the backend.
-   *
-   * @param duration Duration string in HH:mm format.
-   * @returns Total duration in minutes.
-   */
   private durationToMinutes(
     duration: string
   ): number {
-
-    const [
-      hours,
-      minutes
-    ] =
+    const [hours, minutes] =
       duration
         .split(':')
         .map(Number);
@@ -139,25 +80,17 @@ export class WorkprocessComponent {
     return hours * 60 + minutes;
   }
 
-
-  /**
-   * Retrieves the available work steps and updates the loading state.
-   * Failed requests are reported through the component's error message.
-   */
   private loadWorksteps(): void {
-
     this.api.getWorksteps().subscribe({
-
-      next: worksteps => {
-
+      next: (worksteps) => {
         this.worksteps = worksteps;
+
         this.workstepsLoading = false;
 
         this.cdr.detectChanges();
       },
 
-      error: error => {
-
+      error: (error) => {
         console.error(
           'Fehler beim Laden der Worksteps:',
           error
@@ -169,44 +102,59 @@ export class WorkprocessComponent {
           'Die Arbeitsschritte konnten nicht geladen werden.';
 
         this.cdr.detectChanges();
-      }
-
+      },
     });
   }
 
-
-  /**
-   * Validates the form, converts the entered duration and submits
-   * the resulting work-process record to the backend.
-   * Invalid form values stop the request and expose validation feedback.
-   */
   submit(): void {
-
     this.successMessage = '';
     this.errorMessage = '';
 
     if (this.workprocessForm.invalid) {
-
       this.workprocessForm.markAllAsTouched();
+
+      this.errorMessage =
+        this.getValidationErrorMessage();
+
       return;
     }
 
     const formValue =
       this.workprocessForm.getRawValue();
 
+    if (formValue.amount < 0) {
+      this.workprocessForm.controls.amount.markAsTouched();
+
+      this.errorMessage =
+        'Die Eingabe wurde abgelehnt: Die Menge darf nicht negativ sein.';
+
+      return;
+    }
+
+    const today = getToday();
+
+    if (formValue.day > today) {
+      this.workprocessForm.controls.day.markAsTouched();
+
+      this.errorMessage =
+        'Die Eingabe wurde abgelehnt: Das Datum darf nicht in der Zukunft liegen.';
+
+      return;
+    }
+
     const data = {
       ...formValue,
+
       duration:
         this.durationToMinutes(
           formValue.duration
         ),
-      ignore: false
+
+      ignore: false,
     };
 
     this.api.createWorkprocess(data).subscribe({
-
-      next: response => {
-
+      next: (response) => {
         console.log(
           'Workprozess erfolgreich erstellt:',
           response
@@ -220,12 +168,11 @@ export class WorkprocessComponent {
           duration: '',
           amount: 0,
           day: getToday(),
-          ignore: false
+          ignore: false,
         });
       },
 
-      error: error => {
-
+      error: (error) => {
         console.error(
           'Fehler beim Erstellen des Arbeitsprozesses:',
           error
@@ -233,9 +180,47 @@ export class WorkprocessComponent {
 
         this.errorMessage =
           'Der Arbeitsprozess konnte nicht gespeichert werden.';
-      }
-
+      },
     });
   }
 
+  private getValidationErrorMessage(): string {
+    const workstep =
+      this.workprocessForm.controls.workstep_id;
+
+    const duration =
+      this.workprocessForm.controls.duration;
+
+    const amount =
+      this.workprocessForm.controls.amount;
+
+    const day =
+      this.workprocessForm.controls.day;
+
+    if (workstep.hasError('required')) {
+      return 'Die Eingabe wurde abgelehnt: Bitte wählen Sie einen Arbeitsschritt aus.';
+    }
+
+    if (workstep.hasError('min')) {
+      return 'Die Eingabe wurde abgelehnt: Bitte wählen Sie einen gültigen Arbeitsschritt aus.';
+    }
+
+    if (duration.hasError('required')) {
+      return 'Die Eingabe wurde abgelehnt: Bitte geben Sie eine Dauer ein.';
+    }
+
+    if (amount.hasError('required')) {
+      return 'Die Eingabe wurde abgelehnt: Bitte geben Sie eine Menge ein.';
+    }
+
+    if (amount.hasError('min')) {
+      return 'Die Eingabe wurde abgelehnt: Die Menge darf nicht negativ sein.';
+    }
+
+    if (day.hasError('required')) {
+      return 'Die Eingabe wurde abgelehnt: Bitte wählen Sie ein Datum aus.';
+    }
+
+    return 'Die Eingabe wurde abgelehnt: Bitte überprüfen Sie Ihre Eingaben.';
+  }
 }

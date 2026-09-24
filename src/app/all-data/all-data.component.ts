@@ -172,14 +172,11 @@ export class AllDataComponent {
    * ODER
    * - Menge > 40
    */
- get suspiciousWorkprocesses(): Workprocess[] {
+get suspiciousWorkprocesses(): Workprocess[] {
   return this.workprocesses
     .filter(workprocess =>
-      !workprocess.ignore &&
-      (
-        workprocess.duration > this.suspiciousDurationMinutes ||
-        workprocess.amount > this.suspiciousAmount
-      )
+      workprocess.duration > this.suspiciousDurationMinutes ||
+      workprocess.amount > this.suspiciousAmount
     )
     .sort((a, b) => b.id - a.id);
 }
@@ -187,11 +184,11 @@ export class AllDataComponent {
 get suspiciousPerformanceRecords(): PerformanceRecord[] {
   return this.performanceRecords
     .filter(record =>
-      !record.ignore &&
       record.amount > this.suspiciousAmount
     )
     .sort((a, b) => b.id - a.id);
 }
+
 
 get filteredWorkprocesses(): Workprocess[] {
   return this.workprocesses

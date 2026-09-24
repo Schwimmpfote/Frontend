@@ -1,0 +1,570 @@
+@if (loading) {
+  <div class="loading">
+    Daten werden geladen ...
+  </div>
+}
+
+@if (errorMessage) {
+  <div class="message error">
+    {{ errorMessage }}
+  </div>
+}
+
+@if (!loading && !errorMessage) {
+
+  <!-- ===================================================== -->
+  <!-- ERWARTETE FEHLER                                      -->
+  <!-- ===================================================== -->
+
+  <section class="warning-section">
+
+    <div class="warning-header">
+      <h2>Bei diesen Daten wird ein Fehler erwartet</h2>
+
+      <p class="section-description">
+        Die folgenden Daten überschreiten die festgelegten Grenzwerte
+        und sollten überprüft werden.
+      </p>
+    </div>
+
+    <!-- =================================================== -->
+    <!-- VERDÄCHTIGE ARBEITSPROZESSE                         -->
+    <!-- =================================================== -->
+
+    @if (suspiciousWorkprocesses.length > 0) {
+
+      <h3>Arbeitsprozesse</h3>
+
+      <p class="filter-hint">
+        Dauer größer als 03:00 oder Menge größer als 40
+      </p>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Arbeitsschritt</th>
+              <th>Dauer</th>
+              <th>Menge</th>
+              <th>Tag</th>
+              <th>Ignorieren</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (
+              workprocess of suspiciousWorkprocesses;
+              track workprocess.id
+            ) {
+
+              <tr>
+
+                <td>
+                  {{ workprocess.id }}
+                </td>
+
+                <td>
+                  {{ getWorkstepName(workprocess.workstep_id) }}
+                </td>
+
+                <td>
+                  {{ formatDurationValue(workprocess.duration) }}
+                </td>
+
+                <td>
+                  {{ workprocess.amount }}
+                </td>
+
+                <td>
+                  {{ workprocess.day }}
+                </td>
+
+                <td class="checkbox-cell">
+
+                  <input
+                    type="checkbox"
+                    [checked]="workprocess.ignore"
+                    [disabled]="isUpdatingWorkprocess(workprocess.id)"
+                    (change)="updateWorkprocessIgnore(workprocess, $event)"
+                    [attr.aria-label]="
+                      'Arbeitsprozess ' +
+                      workprocess.id +
+                      ' ignorieren'
+                    "
+                  />
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+    }
+
+    <!-- =================================================== -->
+    <!-- VERDÄCHTIGE PERFORMANCE RECORDS                    -->
+    <!-- =================================================== -->
+
+    @if (suspiciousPerformanceRecords.length > 0) {
+
+      <h3>Performance Records</h3>
+
+      <p class="filter-hint">
+        Menge größer als 40
+      </p>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Kategorie</th>
+              <th>Menge</th>
+              <th>Tag</th>
+              <th>Ignorieren</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (
+              record of suspiciousPerformanceRecords;
+              track record.id
+            ) {
+
+              <tr>
+
+                <td>
+                  {{ record.id }}
+                </td>
+
+                <td>
+                  {{
+                    record.category === 'Production'
+                      ? 'Produktion'
+                      : 'Verkauf'
+                  }}
+                </td>
+
+                <td>
+                  {{ record.amount }}
+                </td>
+
+                <td>
+                  {{ record.day }}
+                </td>
+
+                <td class="checkbox-cell">
+
+                  <input
+                    type="checkbox"
+                    [checked]="record.ignore"
+                    [disabled]="isUpdatingPerformanceRecord(record.id)"
+                    (change)="updatePerformanceRecordIgnore(record, $event)"
+                    [attr.aria-label]="
+                      'Performance Record ' +
+                      record.id +
+                      ' ignorieren'
+                    "
+                  />
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+    }
+
+    <!-- =================================================== -->
+    <!-- KEINE FEHLER                                        -->
+    <!-- =================================================== -->
+
+    @if (
+      suspiciousWorkprocesses.length === 0 &&
+      suspiciousPerformanceRecords.length === 0
+    ) {
+
+      <div class="empty">
+        Aktuell wurden keine Daten gefunden,
+        bei denen ein Fehler erwartet wird.
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ALLE ARBEITSPROZESSE                                  -->
+  <!-- ===================================================== -->
+
+  <section>
+
+    <div class="section-header">
+
+      <h2>Arbeitsprozesse</h2>
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="resetWorkprocessFilters()"
+      >
+        Filter zurücksetzen
+      </button>
+
+    </div>
+
+    <div class="filters">
+
+      <div class="filter-field">
+
+        <label for="workstepFilter">
+          Arbeitsschritt
+        </label>
+
+        <select
+          id="workstepFilter"
+          [(ngModel)]="selectedWorkstepId"
+        >
+
+          <option [ngValue]="null">
+            Alle Arbeitsschritte
+          </option>
+
+          @for (
+            workstep of worksteps;
+            track workstep.id
+          ) {
+
+            <option [ngValue]="workstep.id">
+              {{ workstep.name }}
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label for="workprocessDayFilter">
+          Datum
+        </label>
+
+        <input
+          id="workprocessDayFilter"
+          type="date"
+          [(ngModel)]="selectedWorkprocessDay"
+        />
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label for="workprocessIgnoreFilter">
+          Status
+        </label>
+
+        <select
+          id="workprocessIgnoreFilter"
+          [(ngModel)]="workprocessIgnoreFilter"
+        >
+
+          <option value="all">
+            Alle
+          </option>
+
+          <option value="active">
+            Nicht ignoriert
+          </option>
+
+          <option value="ignored">
+            Ignoriert
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Arbeitsschritt</th>
+            <th>Dauer</th>
+            <th>Menge</th>
+            <th>Tag</th>
+            <th>Ignorieren</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (
+            workprocess of filteredWorkprocesses;
+            track workprocess.id
+          ) {
+
+            <tr>
+
+              <td>
+                {{ workprocess.id }}
+              </td>
+
+              <td>
+                {{ getWorkstepName(workprocess.workstep_id) }}
+              </td>
+
+              <td>
+                {{ formatDurationValue(workprocess.duration) }}
+              </td>
+
+              <td>
+                {{ workprocess.amount }}
+              </td>
+
+              <td>
+                {{ workprocess.day }}
+              </td>
+
+              <td class="checkbox-cell">
+
+                <input
+                  type="checkbox"
+                  [checked]="workprocess.ignore"
+                  [disabled]="isUpdatingWorkprocess(workprocess.id)"
+                  (change)="updateWorkprocessIgnore(workprocess, $event)"
+                  [attr.aria-label]="
+                    'Arbeitsprozess ' +
+                    workprocess.id +
+                    ' ignorieren'
+                  "
+                />
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    @if (filteredWorkprocesses.length === 0) {
+
+      <div class="empty">
+        Keine Arbeitsprozesse für die ausgewählten Filter vorhanden.
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ALLE PERFORMANCE RECORDS                              -->
+  <!-- ===================================================== -->
+
+  <section>
+
+    <div class="section-header">
+
+      <h2>Performance Records</h2>
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="resetPerformanceFilters()"
+      >
+        Filter zurücksetzen
+      </button>
+
+    </div>
+
+
+    <div class="filters">
+
+      <div class="filter-field">
+
+        <label for="categoryFilter">
+          Kategorie
+        </label>
+
+        <select
+          id="categoryFilter"
+          [(ngModel)]="selectedCategory"
+        >
+
+          <option value="">
+            Alle Kategorien
+          </option>
+
+          <option value="Production">
+            Produktion
+          </option>
+
+          <option value="Sale">
+            Verkauf
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label for="performanceDayFilter">
+          Datum
+        </label>
+
+        <input
+          id="performanceDayFilter"
+          type="date"
+          [(ngModel)]="selectedPerformanceDay"
+        />
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label for="performanceIgnoreFilter">
+          Status
+        </label>
+
+        <select
+          id="performanceIgnoreFilter"
+          [(ngModel)]="performanceIgnoreFilter"
+        >
+
+          <option value="all">
+            Alle
+          </option>
+
+          <option value="active">
+            Nicht ignoriert
+          </option>
+
+          <option value="ignored">
+            Ignoriert
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Kategorie</th>
+            <th>Menge</th>
+            <th>Tag</th>
+            <th>Ignorieren</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (
+            record of filteredPerformanceRecords;
+            track record.id
+          ) {
+
+            <tr>
+
+              <td>
+                {{ record.id }}
+              </td>
+
+              <td>
+                {{
+                  record.category === 'Production'
+                    ? 'Produktion'
+                    : 'Verkauf'
+                }}
+              </td>
+
+              <td>
+                {{ record.amount }}
+              </td>
+
+              <td>
+                {{ record.day }}
+              </td>
+
+              <td class="checkbox-cell">
+
+                <input
+                  type="checkbox"
+                  [checked]="record.ignore"
+                  [disabled]="isUpdatingPerformanceRecord(record.id)"
+                  (change)="updatePerformanceRecordIgnore(record, $event)"
+                  [attr.aria-label]="
+                    'Performance Record ' +
+                    record.id +
+                    ' ignorieren'
+                  "
+                />
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    @if (filteredPerformanceRecords.length === 0) {
+
+      <div class="empty">
+        Keine Performance Records für die ausgewählten Filter vorhanden.
+      </div>
+
+    }
+
+  </section>
+
+}

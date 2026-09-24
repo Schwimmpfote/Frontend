@@ -1,13 +1,9 @@
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+
+import { HttpClient } from '@angular/common/http';
 
 import {
-  HttpClient
-} from '@angular/common/http';
-
-import {
+  PerformanceRecord,
   PerformanceRecordInsert
 } from '../models/performance-record';
 
@@ -18,10 +14,9 @@ import {
  * reuse the same API access layer.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PerformanceApiService {
-
   private http = inject(HttpClient);
 
   /**
@@ -30,7 +25,6 @@ export class PerformanceApiService {
    */
   private readonly apiUrl = 'http://127.0.0.1:8000';
 
-
   /**
    * Persists a new performance record in the backend.
    *
@@ -38,9 +32,25 @@ export class PerformanceApiService {
    * @returns Observable containing the HTTP response from the backend.
    */
   createPerformanceRecord(data: PerformanceRecordInsert) {
-    return this.http.post(
-      `${this.apiUrl}/performance_record`,
-      data
-    );
+    return this.http.post(`${this.apiUrl}/performance_record`, data);
   }
+
+getPerformanceRecords() {
+  return this.http.get<PerformanceRecord[]>(
+    `${this.apiUrl}/performance_record`
+  );
+}
+updatePerformanceRecordIgnore(id: number, ignore: boolean) {
+  return this.http.patch<PerformanceRecord>(
+    `${this.apiUrl}/performance_record`,
+    { ignore },
+    {
+      params: {
+        id
+      }
+    }
+  );
+}
+
+
 }

@@ -1,41 +1,41 @@
-import {
-  Routes
-} from '@angular/router';
-
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-
   {
     path: '',
-    redirectTo: 'evaluation',
-    pathMatch: 'full'
+    redirectTo: 'all-data',
+    pathMatch: 'full',
   },
 
   {
     path: 'workprocess',
     loadComponent: () =>
-      import('./workprocess/workprocess.component')
-        .then(
-          m => m.WorkprocessComponent
-        )
+      import('./workprocess/workprocess.component').then(
+        (m) => m.WorkprocessComponent,
+      ),
   },
 
   {
     path: 'performance_record',
     loadComponent: () =>
-      import('./performance-record/performance-record.component')
-        .then(
-          m => m.PerformanceRecordComponent
-        )
+      import('./performance-record/performance-record.component').then(
+        (m) => m.PerformanceRecordComponent,
+      ),
   },
 
   {
     path: 'evaluation',
     loadComponent: () =>
-      import('./evaluation/evaluation.component')
-        .then(
-          m => m.EvaluationComponent
-        )
+      import('./evaluation/evaluation.component').then(
+        (m) => m.EvaluationComponent,
+      ),
   },
+{
+  path: 'all-data',
+  loadComponent: () =>
+    import('./all-data/all-data.component').then(
+      (m) => m.AllDataComponent,
+    ),
+},
 
 ];

@@ -1,0 +1,352 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  color: var(--color-text);
+}
+
+section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  padding: 24px;
+  box-sizing: border-box;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
+}
+
+section h2 {
+  margin: 0 0 20px;
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   Kopfbereich
+   ========================================================= */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  margin: 0;
+}
+
+/* =========================================================
+   Erwartete Fehler
+   ========================================================= */
+
+.warning-section {
+  border-left: 4px solid #f59e0b;
+}
+
+.warning-header {
+  margin-bottom: 24px;
+}
+
+.warning-header h2 {
+  margin: 0 0 8px;
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.section-description {
+  margin: 0;
+  color: var(--color-text-light);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.warning-section h3 {
+  margin: 24px 0 8px;
+  color: var(--color-text);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.warning-section h3:first-of-type {
+  margin-top: 0;
+}
+
+.filter-hint {
+  margin: 0 0 12px;
+  color: var(--color-text-light);
+  font-size: 13px;
+}
+
+/* =========================================================
+   Filter
+   ========================================================= */
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 16px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-bottom: 20px;
+  padding: 16px 20px;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .04);
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.filter-field label {
+  flex-shrink: 0;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.filter-field input,
+.filter-field select {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+
+  padding: 0 12px;
+  box-sizing: border-box;
+
+  color: var(--color-text);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+
+  font: inherit;
+  font-size: 14px;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+/* =========================================================
+   Reset-Button
+   ========================================================= */
+
+.reset-button {
+  width: auto;
+  min-width: 180px;
+  height: 42px;
+
+  padding: 0 16px;
+
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border-light);
+  border-radius: 7px;
+
+  font: 600 14px inherit;
+
+  cursor: pointer;
+
+  transition:
+    background-color .15s ease,
+    color .15s ease;
+}
+
+.reset-button:hover {
+  color: var(--color-text);
+  background: var(--color-surface-muted);
+}
+
+/* =========================================================
+   Tabellen
+   ========================================================= */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: var(--color-surface-muted);
+}
+
+th,
+td {
+  padding: 13px 14px;
+}
+
+th {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+td {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:hover {
+  background: var(--color-surface-muted);
+}
+
+/* =========================================================
+   Checkbox
+   ========================================================= */
+
+.checkbox-cell {
+  width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.checkbox-cell input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+
+  cursor: pointer;
+}
+
+.checkbox-cell input[type="checkbox"]:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+/* =========================================================
+   Nachrichten
+   ========================================================= */
+
+.loading,
+.empty,
+.message {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto 24px;
+  padding: 16px;
+
+  box-sizing: border-box;
+
+  border-radius: 8px;
+}
+
+.loading {
+  color: var(--color-text-light);
+  text-align: center;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+}
+
+.empty {
+  margin-top: 16px;
+
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+
+  border: 1px solid var(--color-border-light);
+}
+
+.message.error {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+/* =========================================================
+   Tablet
+   ========================================================= */
+
+@media (max-width: 800px) {
+  :host {
+    padding: 24px 12px;
+  }
+
+  section {
+    padding: 20px;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .reset-button {
+    width: 100%;
+  }
+
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  table {
+    min-width: 650px;
+  }
+}
+
+/* =========================================================
+   Smartphone
+   ========================================================= */
+
+@media (max-width: 600px) {
+  :host {
+    padding: 20px 12px;
+  }
+
+  section {
+    padding: 16px;
+  }
+
+  section h2 {
+    font-size: 18px;
+  }
+
+  .warning-header h2 {
+    font-size: 18px;
+  }
+
+  .filters {
+    padding: 16px;
+  }
+}

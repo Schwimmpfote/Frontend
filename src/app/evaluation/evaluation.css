@@ -1,603 +1,326 @@
 :host {
-    /**
-* Defines the component's main page area and ensures that
-* the content occupies at least the full available viewport height.
-*/
-    display: block;
-    min-height: 100vh;
+  display: block;
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  color: var(--color-text);
+}
 
-    padding: 40px 20px;
-    box-sizing: border-box;
-
-    color: var(--color-text);
-
-
+.period-navigation,
+.period-selector,
+.custom-range,
+.loading,
+section,
+.info-message {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  box-sizing: border-box;
 }
 
 .period-navigation {
-    /**
-* Arranges the available period options evenly in a
-* horizontal navigation bar and limits its maximum width.
-*/
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto 20px;
-    padding: 6px;
-
-    box-sizing: border-box;
-
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-
-    background-color: var(--color-border-light);
-    border-radius: 10px;
-
-
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 6px;
+  background: var(--color-border-light);
+  border-radius: 10px;
 }
 
 .period-navigation button {
-    /**
-* Standardizes the appearance of the individual period options
-* and allows them to fill the available space within the navigation grid.
-*/
-    width: 100%;
-
-    margin: 0;
-    padding: 11px 16px;
-
-    color: var(--color-text-muted);
-    background-color: transparent;
-
-    border: none;
-    border-radius: 7px;
-
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.15s ease,
-        color 0.15s ease;
-
-
+  width: 100%;
+  padding: 11px 16px;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  font: 600 15px inherit;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
 }
 
 .period-navigation button:hover {
-    /**
-* Highlights a period option when hovered
-* without indicating it as the active selection.
-*/
-    color: var(--color-text);
-    background-color: var(--color-surface);
+  color: var(--color-text);
+  background: var(--color-surface);
 }
 
 .period-navigation button.active {
-    /**
-* Marks the currently selected period option
-* using the primary accent color and contrasting text.
-*/
-    color: #ffffff;
-    background-color: var(--color-primary);
+  color: #fff;
+  background: var(--color-primary);
 }
 
 .period-selector {
-    /**
-* Creates a dedicated area for additional period settings
-* and aligns its contents horizontally within the available width.
-*/
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto 24px;
-    padding: 16px 20px;
-
-    box-sizing: border-box;
-
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-light);
-    border-radius: 10px;
-
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-
-
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .04);
 }
 
 .period-selector label {
-    /**
-* Prevents the label from being unnecessarily reduced
-* when the elements are arranged using flexbox.
-*/
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
-.period-selector input {
-    /**
-* Provides a compact input layout with a minimum width
-* while preventing the field from automatically filling the entire container.
-*/
-    width: auto;
-    min-width: 180px;
-    height: 42px;
-
-    padding: 0 12px;
-
-
+.period-selector input,
+.year-selector .year-select {
+  width: auto;
+  min-width: 180px;
+  height: 42px;
+  padding: 0 12px;
 }
 
+.year-selector,
 .month-selector {
-    /**
-* Aligns the elements of the month selector
-* to the start of the available horizontal space.
-*/
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .month-fields {
-    /**
-* Groups the month and year fields in a constrained grid
-* with different minimum widths assigned to the columns.
-*/
-    width: 100%;
-    max-width: 360px;
-
-    display: grid;
-    grid-template-columns:
-        minmax(180px, 1fr) minmax(120px, 160px);
-
-    gap: 10px;
-
-
+  width: 100%;
+  max-width: 360px;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(120px, 160px);
+  gap: 10px;
 }
 
 .month-fields select {
-    /**
-* Adjusts the select fields to the more compact layout of the month selector.
-*/
-    height: 42px;
-
-    padding: 0 42px 0 12px;
-
-    font-size: 14px;
-
-
+  height: 42px;
+  padding: 0 42px 0 12px;
+  font-size: 14px;
 }
 
 .period-selector span {
-    /**
-* Displays additional information within the period controls
-* in a visually subtle manner.
-*/
-    color: var(--color-text-light);
-    font-size: 13px;
+  color: var(--color-text-light);
+  font-size: 13px;
 }
 
 .custom-range {
-    /**
-* Arranges the inputs for a custom date range together with the
-* associated action in a responsive grid layout.
-*/
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto 24px;
-    padding: 24px;
-
-    box-sizing: border-box;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    align-items: end;
-    gap: 16px;
-
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-
-
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
+  gap: 16px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
 }
 
-.custom-range>div {
-    /**
-* Stacks the label and input belonging to each field vertically
-* and keeps their spacing consistent regardless of the content.
-*/
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.custom-range > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .custom-range button {
-    /**
-* Gives the action a defined minimum width within the grid
-* without unnecessarily expanding it across the available space.
-*/
-    width: auto;
-    min-width: 180px;
-
-    margin-top: 0;
-
-
+  width: auto;
+  min-width: 180px;
 }
 
 .loading {
-    /**
-* Reserves a dedicated area for the loading state
-* and centers its message within the content area.
-*/
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto 24px;
-    padding: 20px;
-
-    box-sizing: border-box;
-
-    color: var(--color-text-light);
-
-    text-align: center;
-
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-light);
-    border-radius: 10px;
-
-
+  padding: 20px;
+  color: var(--color-text-light);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
 }
 
 section {
-    /**
-* Defines the shared visual surface of the content sections
-* and provides a consistent maximum width throughout the page.
-*/
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto 24px;
-    padding: 24px;
-
-    box-sizing: border-box;
-
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-light);
-    border-radius: 12px;
-
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-
-
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
 }
 
 section h2 {
-    /**
-* Visually separates the section heading from the content below
-* and establishes a consistent hierarchy within the content areas.
-*/
-    margin: 0 0 20px;
-
-    color: var(--color-text);
-
-    font-size: 20px;
-    font-weight: 600;
-
-
+  margin: 0 0 20px;
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .cards {
-    /**
-* Distributes the metric cards evenly across three columns
-* and prevents unwanted overflow through the minimum width.
-*/
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .card {
-    /**
-* Centers the card content vertically and provides
-* a consistent minimum height for all cards.
-*/
-    min-height: 110px;
-
-    padding: 20px;
-
-    box-sizing: border-box;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 8px;
-
-    background-color: var(--color-surface-muted);
-    border: 1px solid var(--color-border-light);
-    border-radius: 10px;
-
-
+  min-height: 110px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
 }
 
 .card span {
-    /**
-* Visually de-emphasizes the metric label compared to
-* its actual numerical value.
-*/
-    color: var(--color-text-light);
-
-    font-size: 14px;
-    font-weight: 500;
-
-
+  color: var(--color-text-light);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .card strong {
-    /**
-* Clearly emphasizes the actual metric value through
-* a larger and heavier font compared to its label.
-*/
-    color: var(--color-text);
-
-    font-size: 28px;
-    font-weight: 700;
-
-
+  color: var(--color-text);
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .card.production {
-    /**
-* Marks production values with a dedicated color accent
-* without changing the underlying card structure.
-*/
-    border-left: 4px solid var(--color-primary);
+  border-left: 4px solid var(--color-primary);
 }
 
 .card.sale {
-    /**
-* Uses a green side accent to visually distinguish
-* sales-related metrics.
-*/
-    border-left: 4px solid #16a34a;
+  border-left: 4px solid #16a34a;
 }
 
 .card.difference {
-    /**
-* Highlights difference values with a separate color accent
-* so they can be immediately distinguished from production and sales values.
-*/
-    border-left: 4px solid #f59e0b;
+  border-left: 4px solid #f59e0b;
 }
 
 .table-wrapper {
-    /**
-* Allows horizontal scrolling for tables with many columns
-* without expanding the width of the surrounding content area.
-*/
-    width: 100%;
-
-    overflow-x: auto;
-
-    border: 1px solid var(--color-border-light);
-    border-radius: 8px;
-
-
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
 }
 
 table {
-    /**
-* Ensures full use of the available space and prevents
-* excessive compression when the table has few columns.
-*/
-    width: 100%;
-    min-width: 650px;
-
-    border-collapse: collapse;
-
-
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
 }
 
 thead {
-    /**
-* Separates the table header from the actual table content
-* using a subtle background color.
-*/
-    background-color: var(--color-surface-muted);
+  background: var(--color-surface-muted);
+}
+
+th,
+td {
+  padding: 13px 14px;
 }
 
 th {
-    /**
-* Formats column headings compactly and prevents
-* longer labels from wrapping within a column.
-*/
-    padding: 13px 14px;
-
-    color: var(--color-text-muted);
-
-    font-size: 13px;
-    font-weight: 600;
-
-    text-align: left;
-    white-space: nowrap;
-
-    border-bottom: 1px solid var(--color-border-light);
-
-
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 td {
-    /**
-* Defines spacing and visual separation for the individual
-* data cells within the table body.
-*/
-    padding: 13px 14px;
-
-    color: var(--color-text-secondary);
-
-    font-size: 14px;
-
-    border-bottom: 1px solid var(--color-border-subtle);
-
-
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 tbody tr:last-child td {
-    /**
-* Removes the bottom border from the last data row
-* so that it does not appear in addition to the table container border.
-*/
-    border-bottom: none;
+  border-bottom: 0;
 }
 
 tbody tr:hover {
-    /**
-* Subtly highlights the currently hovered data row
-* to make navigation within larger tables easier.
-*/
-    background-color: var(--color-surface-muted);
+  background: var(--color-surface-muted);
 }
 
 th:nth-child(n + 2),
 td:nth-child(n + 2) {
-    /**
-* Right-aligns all columns starting from the second column,
-* which improves the comparability of numerical values in particular.
-*/
-    text-align: right;
+  text-align: right;
 }
 
 tbody:empty::after {
-    /**
-* Displays a clear message when the table body
-* contains no data rows.
-*/
-    content: "Keine Daten vorhanden.";
-
-    display: table-row;
-
-    color: var(--color-text-light);
-
-
+  content: "Keine Daten vorhanden.";
+  display: table-row;
+  color: var(--color-text-light);
 }
 
 .info-message {
-    /**
-* Formats additional information as a separate content area
-* and keeps its width aligned with the other page elements.
-*/
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto 24px;
-    padding: 14px 16px;
-
-    box-sizing: border-box;
-
-    color: var(--color-text-muted);
-    background-color: var(--color-surface-muted);
-
-    border: 1px solid var(--color-border-light);
-    border-radius: 8px;
-
-    font-size: 14px;
-
-
+  padding: 14px 16px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 @media (max-width: 800px) {
+  :host {
+    padding: 24px 12px;
+  }
 
-    /**
- * Reduces the outer spacing on medium-sized screens and
- * changes the metric cards to a single-column layout.
- */
-    :host {
-        padding: 24px 12px;
-    }
+  section {
+    padding: 20px;
+  }
 
-    section {
-        padding: 20px;
-    }
+  .cards {
+    grid-template-columns: 1fr;
+  }
 
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .card {
-        min-height: 90px;
-    }
-
-
+  .card {
+    min-height: 90px;
+  }
 }
 
 @media (max-width: 700px) {
+  .period-navigation {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    /**
- * Adapts navigation, custom date ranges, and selection fields
- * to narrower screen widths by stacking horizontal areas.
- */
-    .period-navigation {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .period-navigation button:last-child {
+    grid-column: span 2;
+  }
 
-    .period-navigation button:last-child {
-        grid-column: span 2;
-    }
+  .custom-range {
+    grid-template-columns: 1fr;
+  }
 
-    .custom-range {
-        grid-template-columns: 1fr;
-    }
+  .custom-range button {
+    width: 100%;
+  }
 
-    .custom-range button {
-        width: 100%;
-    }
+  .period-selector {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-    .period-selector {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 8px;
-    }
+  .period-selector input {
+    width: 100%;
+  }
 
-    .period-selector input {
-        width: 100%;
-    }
-
-    .month-fields {
-        max-width: none;
-        grid-template-columns: 1fr;
-    }
-
-
+  .month-fields {
+    max-width: none;
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
+  :host {
+    padding: 20px 12px;
+  }
 
-    /**
- * Reduces spacing and font sizes for very small displays
- * so that the essential content remains comfortable to use.
- */
-    :host {
-        padding: 20px 12px;
-    }
+  section {
+    padding: 16px;
+  }
 
-    section {
-        padding: 16px;
-    }
+  section h2 {
+    font-size: 18px;
+  }
 
-    section h2 {
-        font-size: 18px;
-    }
+  .card strong {
+    font-size: 24px;
+  }
 
-    .card strong {
-        font-size: 24px;
-    }
-
-    table {
-        min-width: 600px;
-    }
-
-
+  table {
+    min-width: 600px;
+  }
 }

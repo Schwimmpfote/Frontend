@@ -1,289 +1,221 @@
 <nav class="period-navigation" aria-label="Auswertungszeitraum">
-
-  <!-- Provides the available evaluation scopes and highlights the active selection. -->
-  <button type="button" [class.active]="currentMode === 'day'" (click)="selectMode('day')">
+  <button
+    type="button"
+    [class.active]="currentMode === 'day'"
+    (click)="selectMode('day')"
+  >
     Tag
   </button>
 
-  <button type="button" [class.active]="currentMode === 'week'" (click)="selectMode('week')">
+  <button
+    type="button"
+    [class.active]="currentMode === 'week'"
+    (click)="selectMode('week')"
+  >
     Woche
   </button>
 
-  <button type="button" [class.active]="currentMode === 'month'" (click)="selectMode('month')">
+  <button
+    type="button"
+    [class.active]="currentMode === 'month'"
+    (click)="selectMode('month')"
+  >
     Monat
   </button>
 
-  <button type="button" [class.active]="currentMode === 'year'" (click)="selectMode('year')">
+  <button
+    type="button"
+    [class.active]="currentMode === 'year'"
+    (click)="selectMode('year')"
+  >
     Jahr
   </button>
 
-  <button type="button" [class.active]="currentMode === 'custom'" (click)="selectMode('custom')">
+  <button
+    type="button"
+    [class.active]="currentMode === 'custom'"
+    (click)="selectMode('custom')"
+  >
     Zeitraum
   </button>
-
 </nav>
-
 
 @if (currentMode === 'day') {
 
-<!-- Allows the user to select the reference date for a single-day evaluation. -->
 <div class="period-selector">
+  <label for="selectedDate"> Tag auswählen</label>
 
-  <label for="selectedDate">
-    Tag
-  </label>
+  <input
+    id="selectedDate"
+    type="date"
+    [formControl]="customForm.controls.selectedDate"
+    (change)="onDateChange()"
+  />
 
-  <input id="selectedDate" type="date" [formControl]="customForm.controls.selectedDate" (change)="onDateChange()" />
-
+  <span> Wählen Sie einen Tag für die Tagesauswertung aus. </span>
 </div>
 
-}
+} @if (currentMode === 'week') {
 
-
-@if (currentMode === 'week') {
-
-<!-- The selected date determines which Monday-to-Sunday week is evaluated. -->
 <div class="period-selector">
+  <label for="selectedWeek"> Woche auswählen </label>
 
-  <label for="selectedWeek">
-    Woche auswählen
-  </label>
+  <input
+    id="selectedWeek"
+    type="date"
+    [formControl]="customForm.controls.selectedDate"
+    (change)="onDateChange()"
+  />
 
-  <input id="selectedWeek" type="date" [formControl]="customForm.controls.selectedDate" (change)="onDateChange()" />
-
-  <span>
-    Die Woche des ausgewählten Tages wird angezeigt.
-  </span>
-
+  <span> Die Woche des ausgewählten Tages wird angezeigt. </span>
 </div>
 
-}
+} @if (currentMode === 'month') {
 
-
-@if (currentMode === 'month') {
-
-<!-- Separates month and year selection because the API request covers a complete calendar month. -->
 <div class="period-selector month-selector">
-
-  <label>
-    Monat auswählen
-  </label>
+  <label> Monat auswählen </label>
 
   <div class="month-fields">
+    <select
+      aria-label="Monat auswählen"
+      [formControl]="customForm.controls.selectedMonth"
+      (change)="onMonthChange()"
+    >
+      <option [ngValue]="0">Januar</option>
 
-    <select aria-label="Monat auswählen" [formControl]="customForm.controls.selectedMonth" (change)="onMonthChange()">
-      <option [ngValue]="0">
-        Januar
-      </option>
+      <option [ngValue]="1">Februar</option>
 
-      <option [ngValue]="1">
-        Februar
-      </option>
+      <option [ngValue]="2">März</option>
 
-      <option [ngValue]="2">
-        März
-      </option>
+      <option [ngValue]="3">April</option>
 
-      <option [ngValue]="3">
-        April
-      </option>
+      <option [ngValue]="4">Mai</option>
 
-      <option [ngValue]="4">
-        Mai
-      </option>
+      <option [ngValue]="5">Juni</option>
 
-      <option [ngValue]="5">
-        Juni
-      </option>
+      <option [ngValue]="6">Juli</option>
 
-      <option [ngValue]="6">
-        Juli
-      </option>
+      <option [ngValue]="7">August</option>
 
-      <option [ngValue]="7">
-        August
-      </option>
+      <option [ngValue]="8">September</option>
 
-      <option [ngValue]="8">
-        September
-      </option>
+      <option [ngValue]="9">Oktober</option>
 
-      <option [ngValue]="9">
-        Oktober
-      </option>
+      <option [ngValue]="10">November</option>
 
-      <option [ngValue]="10">
-        November
-      </option>
-
-      <option [ngValue]="11">
-        Dezember
-      </option>
+      <option [ngValue]="11">Dezember</option>
     </select>
 
-    <select aria-label="Jahr auswählen" [formControl]="customForm.controls.selectedMonthYear"
-      (change)="onMonthYearChange()">
-      @for (
-      year of availableYears;
-      track year
-      ) {
-      <option [ngValue]="year">
-        {{ year }}
-      </option>
+    <select
+      aria-label="Jahr auswählen"
+      [formControl]="customForm.controls.selectedMonthYear"
+      (change)="onMonthYearChange()"
+    >
+      @for ( year of availableYears; track year ) {
+
+      <option [ngValue]="year">{{ year }}</option>
+
       }
     </select>
-
   </div>
 
+  <span>
+    Der ausgewählte Monat wird als vollständiger Kalendermonat ausgewertet.
+  </span>
 </div>
 
-}
+} @if (currentMode === 'year') {
 
+<div class="period-selector year-selector">
+  <label for="selectedYear"> Jahr auswählen </label>
 
-@if (currentMode === 'year') {
+  <select
+    id="selectedYear"
+    class="year-select"
+    aria-label="Jahr auswählen"
+    [formControl]="customForm.controls.selectedYear"
+    (change)="onYearChange()"
+  >
+    @for ( year of availableYears; track year ) {
 
-<!-- Uses the selected year as the basis for a complete calendar-year evaluation. -->
-<div class="period-selector">
+    <option [ngValue]="year">{{ year }}</option>
 
-  <label for="selectedYearInput">
-    Jahr auswählen
-  </label>
+    }
+  </select>
 
-  <input id="selectedYearInput" type="number" min="2000" max="2100" [value]="selectedMonthYear" (change)="
-        customForm.controls.selectedDate.setValue(
-          $any($event.target).value + '-01-01'
-        );
-        onDateChange()
-      " />
-
+  <span>
+    Das gesamte Kalenderjahr des ausgewählten Jahres wird ausgewertet.
+  </span>
 </div>
 
-}
+} @if (currentMode === 'custom') {
 
-
-@if (currentMode === 'custom') {
-
-<!-- Collects the inclusive start and end dates for a manually defined evaluation period. -->
-<form [formGroup]="customForm" (ngSubmit)="loadCustomRange()" class="custom-range">
-
+<form
+  [formGroup]="customForm"
+  (ngSubmit)="loadCustomRange()"
+  class="custom-range"
+>
   <div>
-
-    <label for="from">
-      Von
-    </label>
+    <label for="from"> Von </label>
 
     <input id="from" type="date" formControlName="from" />
-
   </div>
 
   <div>
-
-    <label for="to">
-      Bis
-    </label>
+    <label for="to"> Bis </label>
 
     <input id="to" type="date" formControlName="to" />
-
   </div>
 
-  <button type="submit" [disabled]="loading">
-    Zeitraum anzeigen
-  </button>
-
+  <button type="submit" [disabled]="loading">Zeitraum anzeigen</button>
 </form>
-
 
 @if (!customRangeRequested && !loading) {
 
-<!-- Explains why no evaluation is displayed until the custom range is submitted. -->
 <div class="info-message">
-  Bitte wählen Sie zunächst ein Start- und Enddatum
-  aus und klicken Sie anschließend auf
-  „Zeitraum anzeigen“.
+  Bitte wählen Sie zunächst ein Start- und Enddatum aus und klicken Sie
+  anschließend auf „Zeitraum anzeigen“.
 </div>
 
-}
+} } @if (errorMessage) {
 
-}
+<div class="message error">{{ errorMessage }}</div>
 
+} @if (loading) {
 
-@if (errorMessage) {
+<div class="loading">Auswertung wird geladen ...</div>
 
-<!-- Displays validation or API errors without interrupting the surrounding evaluation view. -->
-<div class="message error">
-  {{ errorMessage }}
-</div>
+} @if (evaluation) {
 
-}
-
-
-@if (loading) {
-
-<!-- Indicates that the requested evaluation data has not finished loading yet. -->
-<div class="loading">
-  Auswertung wird geladen ...
-</div>
-
-}
-
-
-@if (evaluation) {
-
-<!-- Summarizes the calculated totals for the currently selected evaluation period. -->
 <section>
-
-  <h2>
-    {{ modeTitle }}
-  </h2>
+  <h2>{{ modeTitle }}</h2>
 
   <div class="cards">
-
     <div class="card production">
-      <span>
-        Produktion
-      </span>
+      <span> Produktion </span>
 
-      <strong>
-        {{ selectedPeriod.production }}
-      </strong>
+      <strong> {{ selectedPeriod.production }} </strong>
     </div>
 
     <div class="card sale">
-      <span>
-        Verkauf
-      </span>
+      <span> Verkauf </span>
 
-      <strong>
-        {{ selectedPeriod.sale }}
-      </strong>
+      <strong> {{ selectedPeriod.sale }} </strong>
     </div>
 
     <div class="card difference">
-      <span>
-        Differenz
-      </span>
+      <span> Differenz </span>
 
-      <strong>
-        {{ selectedPeriod.difference }}
-      </strong>
+      <strong> {{ selectedPeriod.difference }} </strong>
     </div>
-
   </div>
-
 </section>
 
-
-<!-- Breaks down the aggregated evaluation by individual production work steps. -->
 <section>
-
-  <h2>
-    Auswertung nach Arbeitsschritt
-  </h2>
+  <h2>Auswertung nach Arbeitsschritt</h2>
 
   <div class="table-wrapper">
-
     <table>
-
       <thead>
         <tr>
           <th>Arbeitsschritt</th>
@@ -294,58 +226,29 @@
       </thead>
 
       <tbody>
-
-        @for (
-        workstep of evaluation.worksteps;
-        track workstep.workstep_id
-        ) {
+        @for ( workstep of evaluation.worksteps; track workstep.workstep_id ) {
 
         <tr>
+          <td>{{ workstep.name }}</td>
 
-          <td>
-            {{ workstep.name }}
-          </td>
+          <td>{{ workstep.duration }} min</td>
 
-          <td>
-            {{ workstep.duration }} min
-          </td>
+          <td>{{ workstep.amount }}</td>
 
-          <td>
-            {{ workstep.amount }}
-          </td>
-
-          <td>
-            {{
-            workstep.duration_per_piece
-            | number:'1.2-2'
-            }}
-            min
-          </td>
-
+          <td>{{ workstep.duration_per_piece | number:'1.2-2' }} min</td>
         </tr>
 
         }
-
       </tbody>
-
     </table>
-
   </div>
-
 </section>
 
-
-<!-- Lists the daily production and sales figures included in the selected evaluation. -->
 <section>
-
-  <h2>
-    Tagesübersicht
-  </h2>
+  <h2>Tagesübersicht</h2>
 
   <div class="table-wrapper">
-
     <table>
-
       <thead>
         <tr>
           <th>Tag</th>
@@ -356,40 +259,22 @@
       </thead>
 
       <tbody>
-
-        @for (
-        day of evaluation.daily;
-        track day.day
-        ) {
+        @for ( day of evaluation.daily; track day.day ) {
 
         <tr>
+          <td>{{ day.day }}</td>
 
-          <td>
-            {{ day.day }}
-          </td>
+          <td>{{ day.production }}</td>
 
-          <td>
-            {{ day.production }}
-          </td>
+          <td>{{ day.sale }}</td>
 
-          <td>
-            {{ day.sale }}
-          </td>
-
-          <td>
-            {{ day.difference }}
-          </td>
-
+          <td>{{ day.difference }}</td>
         </tr>
 
         }
-
       </tbody>
-
     </table>
-
   </div>
-
 </section>
 
 }
